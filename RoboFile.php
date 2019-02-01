@@ -127,4 +127,136 @@ class RoboFile extends \Robo\Tasks
     {
         $this->pdo = new PDO('mysql:host=' . $this->host . ';dbname=' . $this->dbname, $this->username, $this->password);
     }
+
+    public function generate_crud_snippet($name, $table)
+    {
+        $this->connect_to_db();
+        $columns = $this->get_columns($table);
+        $className = ucfirst($name);
+        $ref = $this->taskWriteToFile('./application/controllers/' . $className . '.php')
+            ->line('<?php')
+            ->line('defined(\'BASEPATH\') OR exit(\'No direct script access allowed\');')
+            ->line('')
+            ->line('class ' . $className . ' extends MY_Controller')
+            ->line('{')
+            ->line('');
+
+        $this->generate_read($ref, $name, $table, $columns);
+        $this->generate_detail($ref, $name, $table, $columns);
+        $this->generate_add($ref, $name, $table, $columns);
+        $this->generate_edit($ref, $name, $table, $columns);
+
+        $ref->line('}')
+            ->run();
+    }
+
+    private function generate_read(&$ref, $name, $table, $columns)
+    {
+        $modelName = ucfirst($table) . '_m';
+        $ref->line('    public function ' . $table . '()')
+            ->line('    {')
+            ->line('        $this->data[\'' . $columns[0]['COLUMN_NAME'] . '\'] = $this->uri->segment(3);')
+            ->line('        $this->load->model(\'' . $modelName . '\');')
+            ->line('        if (isset($this->data[\'' . $columns[0]['COLUMN_NAME'] . '\']))')
+            ->line('        {')
+            ->line('            $data = ' . $modelName . '::find($this->data[\'' . $columns[0]['COLUMN_NAME'] . '\']);')
+            ->line('            $data->delete();')
+            ->line('            $this->flashmsg(\'Data successfully deleted\');')
+            ->line('            redirect(\'' . $name . '/' . $table . '\');')
+            ->line('        }')
+            ->line('')
+            ->line('        $this->data[\'' . $table . '\'] = ' . $modelName . '::get();')
+            ->line('        $this->data[\'title\'] = \'' . ucwords(str_replace('_', ' ', $table)) . '\';')
+            ->line('        $this->data[\'content\'] = \'' . $table . '\';')
+            ->line('        $this->template($this->data, $this->module);')
+            ->line('    }')
+            ->line('');
+    }
+
+    private function generate_detail(&$ref, $name, $table, $columns)
+    {
+        $modelName = ucfirst($table) . '_m';
+        $ref->line('    public function detail_' . $table . '()')
+            ->line('    {')
+            ->line('        $this->data[\'' . $columns[0]['COLUMN_NAME'] . '\'] = $this->uri->segment(3);')
+            ->line('        $this->check_allowance(!isset($this->data[\'' . $columns[0]['COLUMN_NAME'] . '\']));')
+            ->line('')
+            ->line('        $this->load->model(\'' . $modelName . '\');')
+            ->line('        $this->data[\'' . $table . '\'] = ' . $modelName . '::find($this->data[\'' . $columns[0]['COLUMN_NAME'] . '\']);')
+            ->line('        $this->check_allowance(!isset($' . $table . '), [\'Data not found\', \'danger\']);')
+            ->line('        $this->data[\'title\'] = \'Detail ' . ucwords(str_replace('_', ' ', $table)) . '\';')
+            ->line('        $this->data[\'content\'] = \'detail_' . $table . '\';')
+            ->line('        $this->template($this->data, $this->module);')
+            ->line('    }')
+            ->line('');
+    }
+
+    private function generate_add(&$ref, $name, $table, $columns)
+    {
+        $modelName = ucfirst($table) . '_m';
+        $ref->line('    public function add_' . $table . '()')
+            ->line('    {')
+            ->line('        $this->load->model(\'' . $modelName . '\');')
+            ->line('        if ($this->POST(\'submit\'))')
+            ->line('        {')
+            ->line('            $' . $table . ' = new ' . $modelName . '();');
+
+        foreach ($columns as $column)
+        {
+            $column = $column['COLUMN_NAME'];
+            $ref->line('            $' . $table . '->' . $column . ' = $this->POST(\'' . $column . '\');');
+        }
+
+        $ref->line('            $' . $table . '->save();')
+            ->line('            $this->flashmsg(\'Data successfully added\');')
+            ->line('            redirect(\'' . $name . '/add_' . $table . '\');')
+            ->line('        }')
+            ->line('')
+            ->line('        $this->data[\'title\'] = \'Add ' . ucwords(str_replace('_', ' ', $table)) . '\';')
+            ->line('        $this->data[\'content\'] = \'add_' . $table . '\';')
+            ->line('        $this->template($this->data, $this->module);')
+            ->line('    }')
+            ->line('');        
+    }
+
+    private function generate_edit(&$ref, $name, $table, $columns)
+    {
+        $modelName = ucfirst($table) . '_m';
+        $ref->line('    public function edit_' . $table . '()')
+            ->line('    {')
+            ->line('        $this->data[\'' . $columns[0]['COLUMN_NAME'] . '\'] = $this->uri->segment(3);')
+            ->line('        $this->check_allowance(!isset($this->data[\'' . $columns[0]['COLUMN_NAME'] . '\']));')
+            ->line('')
+            ->line('        $this->load->model(\'' . $modelName . '\');')
+            ->line('        $this->data[\'' . $table . '\'] = ' . $modelName . '::find($this->data[\'' . $columns[0]['COLUMN_NAME'] . '\']);')
+            ->line('        $this->check_allowance(!isset($this->data[\'' . $table . '\']), [\'Data not found\', \'danger\']);')
+            ->line('')
+            ->line('        if ($this->POST(\'submit\'))')
+            ->line('        {');
+
+        foreach ($columns as $column)
+        {
+            $column = $column['COLUMN_NAME'];
+            $ref->line('            $this->data[\'' . $table . '\']->' . $column . ' = $this->POST(\'' . $column . '\');');
+        }
+
+        $ref->line('            $this->data[\'' . $table . '\']->save();')
+            ->line('            $this->flashmsg(\'Data successfully edited\');')
+            ->line('            redirect(\'' . $name . '/edit_' . $table . '/\' . $this->data[\'' . $columns[0]['COLUMN_NAME'] . '\']);')
+            ->line('        }')
+            ->line('')
+            ->line('        $this->data[\'title\'] = \'Edit ' . ucwords(str_replace('_', ' ', $table)) . '\';')
+            ->line('        $this->data[\'content\'] = \'edit_' . $table . '\';')
+            ->line('        $this->template($this->data, $this->module);')
+            ->line('    }')
+            ->line('');        
+    }
+
+    private function get_columns($table)
+    {
+        $sql = 'SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = \'' . $table . '\'';
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }

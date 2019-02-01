@@ -2,7 +2,7 @@
 
 class MY_Controller extends CI_Controller
 {
-  	private $title = 'KNN IG';
+  	private $title = 'KMS CBR';
 	
 	public function __construct()
 	{
