@@ -183,7 +183,7 @@ class RoboFile extends \Robo\Tasks
             ->line('')
             ->line('        $this->load->model(\'' . $modelName . '\');')
             ->line('        $this->data[\'' . $table . '\'] = ' . $modelName . '::find($this->data[\'' . $columns[0]['COLUMN_NAME'] . '\']);')
-            ->line('        $this->check_allowance(!isset($' . $table . '), [\'Data not found\', \'danger\']);')
+            ->line('        $this->check_allowance(!isset($this->data[\'' . $table . '\']), [\'Data not found\', \'danger\']);')
             ->line('        $this->data[\'title\'] = \'Detail ' . ucwords(str_replace('_', ' ', $table)) . '\';')
             ->line('        $this->data[\'content\'] = \'detail_' . $table . '\';')
             ->line('        $this->template($this->data, $this->module);')

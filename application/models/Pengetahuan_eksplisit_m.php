@@ -20,4 +20,11 @@ class Pengetahuan_eksplisit_m extends Eloquent
         return $this->hasOne('Pengguna_m', 'id_pengguna', 'id_pengguna');
     }
 
+    public function komentar()
+    {
+        require_once __DIR__ . '/Komentar_eksplisit_m.php';
+        return $this->hasMany('Komentar_eksplisit_m', 'id_eksplisit', 'id_eksplisit')
+                ->orderBy('created_at', 'DESC');   
+    }
+
 }

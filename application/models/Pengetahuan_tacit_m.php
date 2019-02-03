@@ -20,4 +20,10 @@ class Pengetahuan_tacit_m extends Eloquent
         return $this->hasOne('Kategori_m', 'id_kategori', 'id_kategori');
     }
 
+    public function komentar()
+    {
+        require_once __DIR__ . '/Komentar_tacit_m.php';
+        return $this->hasMany('Komentar_tacit_m', 'id_tacit', 'id_tacit')
+                ->orderBy('created_at', 'DESC');   
+    }
 }
