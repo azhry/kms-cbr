@@ -39,6 +39,23 @@ class Kasubbid extends MY_Controller
         $this->template($this->data, $this->module);
     }
 
+    public function validasi_tacit()
+    {
+        $this->load->model('Pengetahuan_tacit_m');
+        if ($this->POST('validate'))
+        {
+        	$data = Pengetahuan_tacit_m::find($this->POST('id'));
+        	$data->status = $data->status == 'Pending' ? 'Valid' : 'Pending';
+        	$data->save();
+        	echo json_encode(['status' => $data->status]);
+        	exit;
+        }
+        $this->data['pengetahuan_tacit'] = Pengetahuan_tacit_m::get();
+        $this->data['title'] = 'Validasi Tacit';
+        $this->data['content'] = 'validasi_tacit';
+        $this->template($this->data, $this->module);
+    }
+
     public function detail_pengetahuan_tacit()
     {
         $this->data['id_tacit'] = $this->uri->segment(3);
@@ -135,6 +152,23 @@ class Kasubbid extends MY_Controller
         $this->template($this->data, $this->module);
     }
 
+    public function validasi_eksplisit()
+    {
+        $this->load->model('Pengetahuan_eksplisit_m');
+        if ($this->POST('validate'))
+        {
+        	$data = Pengetahuan_eksplisit_m::find($this->POST('id'));
+        	$data->status = $data->status == 'Pending' ? 'Valid' : 'Pending';
+        	$data->save();
+        	echo json_encode(['status' => $data->status]);
+        	exit;
+        }
+        $this->data['pengetahuan_eksplisit'] = Pengetahuan_eksplisit_m::get();
+        $this->data['title'] = 'Pengetahuan Eksplisit';
+        $this->data['content'] = 'validasi_eksplisit';
+        $this->template($this->data, $this->module);
+    }
+
     public function detail_pengetahuan_eksplisit()
     {
         $this->data['id_eksplisit'] = $this->uri->segment(3);
@@ -226,6 +260,124 @@ class Kasubbid extends MY_Controller
         $this->template($this->data, $this->module);
     }
 
+    public function bagian()
+    {
+        $this->data['id_bagian'] = $this->uri->segment(3);
+        $this->load->model('Bagian_m');
+        if (isset($this->data['id_bagian']))
+        {
+            $data = Bagian_m::find($this->data['id_bagian']);
+            $data->delete();
+            $this->flashmsg('Data successfully deleted');
+            redirect('kasubbid/bagian');
+        }
+
+        $this->data['bagian'] = Bagian_m::get();
+        $this->data['title'] = 'Bagian';
+        $this->data['content'] = 'bagian';
+        $this->template($this->data, $this->module);
+    }
+
+    public function add_bagian()
+    {
+        $this->load->model('Bagian_m');
+        if ($this->POST('submit'))
+        {
+            $bagian = new Bagian_m();
+            $bagian->bagian = $this->POST('bagian');
+            $bagian->deskripsi = $this->POST('deskripsi');
+            $bagian->save();
+            $this->flashmsg('Data successfully added');
+            redirect('kasubbid/add_bagian');
+        }
+
+        $this->data['title'] = 'Add Bagian';
+        $this->data['content'] = 'add_bagian';
+        $this->template($this->data, $this->module);
+    }
+
+    public function edit_bagian()
+    {
+        $this->data['id_bagian'] = $this->uri->segment(3);
+        $this->check_allowance(!isset($this->data['id_bagian']));
+
+        $this->load->model('Bagian_m');
+        $this->data['bagian'] = Bagian_m::find($this->data['id_bagian']);
+        $this->check_allowance(!isset($this->data['bagian']), ['Data not found', 'danger']);
+
+        if ($this->POST('submit'))
+        {
+            $this->data['bagian']->bagian = $this->POST('bagian');
+            $this->data['bagian']->deskripsi = $this->POST('deskripsi');
+            $this->data['bagian']->save();
+            $this->flashmsg('Data successfully edited');
+            redirect('kasubbid/edit_bagian/' . $this->data['id_bagian']);
+        }
+
+        $this->data['title'] = 'Edit Bagian';
+        $this->data['content'] = 'edit_bagian';
+        $this->template($this->data, $this->module);
+    }
+
+    public function gejala()
+    {
+        $this->data['id_gejala'] = $this->uri->segment(3);
+        $this->load->model('Gejala_m');
+        if (isset($this->data['id_gejala']))
+        {
+            $data = Gejala_m::find($this->data['id_gejala']);
+            $data->delete();
+            $this->flashmsg('Data successfully deleted');
+            redirect('kasubbid/gejala');
+        }
+
+        $this->data['gejala'] = Gejala_m::get();
+        $this->data['title'] = 'Gejala';
+        $this->data['content'] = 'gejala';
+        $this->template($this->data, $this->module);
+    }
+
+    public function add_gejala()
+    {
+        $this->load->model('Gejala_m');
+        if ($this->POST('submit'))
+        {
+            $gejala = new Gejala_m();
+            $gejala->gejala = $this->POST('gejala');
+            $gejala->representasi = $this->POST('representasi');
+            $gejala->save();
+            $this->flashmsg('Data successfully added');
+            redirect('kasubbid/add_gejala');
+        }
+
+        $this->data['title'] = 'Add Gejala';
+        $this->data['content'] = 'add_gejala';
+        $this->template($this->data, $this->module);
+    }
+
+    public function edit_gejala()
+    {
+        $this->data['id_gejala'] = $this->uri->segment(3);
+        $this->check_allowance(!isset($this->data['id_gejala']));
+
+        $this->load->model('Gejala_m');
+        $this->data['gejala'] = Gejala_m::find($this->data['id_gejala']);
+        $this->check_allowance(!isset($this->data['gejala']), ['Data not found', 'danger']);
+
+        if ($this->POST('submit'))
+        {
+            $this->data['gejala']->gejala = $this->POST('gejala');
+            $this->data['gejala']->representasi = $this->POST('representasi');
+            $this->data['gejala']->save();
+            $this->flashmsg('Data successfully edited');
+            redirect('kasubbid/edit_gejala/' . $this->data['id_gejala']);
+        }
+
+        $this->data['title'] = 'Edit Gejala';
+        $this->data['content'] = 'edit_gejala';
+        $this->template($this->data, $this->module);
+    }
+
 	public function reward()
 	{
 		
@@ -250,6 +402,127 @@ class Kasubbid extends MY_Controller
 	{
 		
 	}
+
+	public function masalah()
+    {
+        $this->data['id_masalah'] = $this->uri->segment(3);
+        $this->load->model('Masalah_m');
+        if (isset($this->data['id_masalah']))
+        {
+            $data = Masalah_m::find($this->data['id_masalah']);
+            $data->delete();
+            $this->flashmsg('Data successfully deleted');
+            redirect('kasubbid/masalah');
+        }
+
+        $this->data['masalah'] = Masalah_m::get();
+        $this->data['title'] = 'Masalah';
+        $this->data['content'] = 'masalah';
+        $this->template($this->data, $this->module);
+    }
+
+    public function add_masalah()
+    {
+        $this->load->model('Masalah_m');
+        if ($this->POST('submit'))
+        {
+            $masalah = new Masalah_m();
+            $masalah->id_bagian = $this->POST('id_bagian');
+            $masalah->judul = $this->POST('judul');
+            $masalah->save();
+
+            $this->load->model('Gejala_masalah_m');
+            $gejala = [];
+            foreach ($this->POST('id_gejala') as $id_gejala)
+            {
+            	$gejala []= [
+            		'id_masalah'	=> $masalah->id_masalah,
+            		'id_gejala'		=> $id_gejala
+            	];
+            }
+            Gejala_masalah_m::insert($gejala);
+
+            $this->load->model('Solusi_m');
+            $solusi = [];
+            foreach ($this->POST('solusi') as $s)
+            {
+            	$solusi []= [
+            		'id_masalah'	=> $masalah->id_masalah,
+            		'solusi'		=> $s
+            	];
+            }
+            Solusi_m::insert($solusi);
+
+            $this->flashmsg('Data successfully added');
+            redirect('kasubbid/add_masalah');
+        }
+
+        $this->load->model('Gejala_m');
+        $this->data['gejala'] = Gejala_m::get();
+
+        $this->load->model('Bagian_m');
+        $this->data['bagian'] = Bagian_m::get();
+
+        $this->data['title'] = 'Add Masalah';
+        $this->data['content'] = 'add_masalah';
+        $this->template($this->data, $this->module);
+    }
+
+    public function edit_masalah()
+    {
+        $this->data['id_masalah'] = $this->uri->segment(3);
+        $this->check_allowance(!isset($this->data['id_masalah']));
+
+        $this->load->model('Masalah_m');
+        $this->data['masalah'] = Masalah_m::find($this->data['id_masalah']);
+        $this->check_allowance(!isset($this->data['masalah']), ['Data not found', 'danger']);
+
+        if ($this->POST('submit'))
+        {
+            $this->data['masalah']->id_bagian = $this->POST('id_bagian');
+            $this->data['masalah']->judul = $this->POST('judul');
+            $this->data['masalah']->save();
+
+            $this->load->model('Gejala_masalah_m');
+            $gejala = [];
+            foreach ($this->POST('id_gejala') as $id_gejala)
+            {
+            	$gejala []= [
+            		'id_masalah'	=> $this->data['masalah']->id_masalah,
+            		'id_gejala'		=> $id_gejala
+            	];
+            }
+            Gejala_masalah_m::where('id_masalah', $this->data['masalah']->id_masalah)
+            					->delete();
+            Gejala_masalah_m::insert($gejala);
+
+            $this->load->model('Solusi_m');
+            $solusi = [];
+            foreach ($this->POST('solusi') as $s)
+            {
+            	$solusi []= [
+            		'id_masalah'	=> $this->data['masalah']->id_masalah,
+            		'solusi'		=> $s
+            	];
+            }
+            Solusi_m::where('id_masalah', $this->data['masalah']->id_masalah)
+            					->delete();
+            Solusi_m::insert($solusi);
+
+            $this->flashmsg('Data successfully edited');
+            redirect('kasubbid/edit_masalah/' . $this->data['id_masalah']);
+        }
+
+        $this->load->model('Gejala_m');
+        $this->data['gejala'] = Gejala_m::get();
+
+        $this->load->model('Bagian_m');
+        $this->data['bagian'] = Bagian_m::get();
+
+        $this->data['title'] = 'Edit Masalah';
+        $this->data['content'] = 'edit_masalah';
+        $this->template($this->data, $this->module);
+    }
 
 	public function kategori()
     {

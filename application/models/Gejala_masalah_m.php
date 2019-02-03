@@ -7,6 +7,7 @@ class Gejala_masalah_m extends Eloquent
 {
     protected $table        = 'gejala_masalah';
     protected $primaryKey   = 'id';
+    protected $fillable		= ['id_masalah', 'id_gejala'];
 
     public function gejala()
     {

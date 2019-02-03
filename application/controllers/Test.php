@@ -4,91 +4,81 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Test extends MY_Controller
 {
 
-    public function pengetahuan_eksplisit()
+    public function bagian()
     {
-        $this->data['id_eksplisit'] = $this->uri->segment(3);
-        $this->load->model('Pengetahuan_eksplisit_m');
-        if (isset($this->data['id_eksplisit']))
+        $this->data['id_bagian'] = $this->uri->segment(3);
+        $this->load->model('Bagian_m');
+        if (isset($this->data['id_bagian']))
         {
-            $data = Pengetahuan_eksplisit_m::find($this->data['id_eksplisit']);
+            $data = Bagian_m::find($this->data['id_bagian']);
             $data->delete();
             $this->flashmsg('Data successfully deleted');
-            redirect('test/pengetahuan_eksplisit');
+            redirect('test/bagian');
         }
 
-        $this->data['pengetahuan_eksplisit'] = Pengetahuan_eksplisit_m::get();
-        $this->data['title'] = 'Pengetahuan Eksplisit';
-        $this->data['content'] = 'pengetahuan_eksplisit';
+        $this->data['bagian'] = Bagian_m::get();
+        $this->data['title'] = 'Bagian';
+        $this->data['content'] = 'bagian';
         $this->template($this->data, $this->module);
     }
 
-    public function detail_pengetahuan_eksplisit()
+    public function detail_bagian()
     {
-        $this->data['id_eksplisit'] = $this->uri->segment(3);
-        $this->check_allowance(!isset($this->data['id_eksplisit']));
+        $this->data['id_bagian'] = $this->uri->segment(3);
+        $this->check_allowance(!isset($this->data['id_bagian']));
 
-        $this->load->model('Pengetahuan_eksplisit_m');
-        $this->data['pengetahuan_eksplisit'] = Pengetahuan_eksplisit_m::find($this->data['id_eksplisit']);
-        $this->check_allowance(!isset($pengetahuan_eksplisit), ['Data not found', 'danger']);
-        $this->data['title'] = 'Detail Pengetahuan Eksplisit';
-        $this->data['content'] = 'detail_pengetahuan_eksplisit';
+        $this->load->model('Bagian_m');
+        $this->data['bagian'] = Bagian_m::find($this->data['id_bagian']);
+        $this->check_allowance(!isset($this->data['bagian']), ['Data not found', 'danger']);
+        $this->data['title'] = 'Detail Bagian';
+        $this->data['content'] = 'detail_bagian';
         $this->template($this->data, $this->module);
     }
 
-    public function add_pengetahuan_eksplisit()
+    public function add_bagian()
     {
-        $this->load->model('Pengetahuan_eksplisit_m');
+        $this->load->model('Bagian_m');
         if ($this->POST('submit'))
         {
-            $pengetahuan_eksplisit = new Pengetahuan_eksplisit_m();
-            $pengetahuan_eksplisit->id_eksplisit = $this->POST('id_eksplisit');
-            $pengetahuan_eksplisit->id_kategori = $this->POST('id_kategori');
-            $pengetahuan_eksplisit->id_pengguna = $this->POST('id_pengguna');
-            $pengetahuan_eksplisit->judul = $this->POST('judul');
-            $pengetahuan_eksplisit->keterangan = $this->POST('keterangan');
-            $pengetahuan_eksplisit->referensi = $this->POST('referensi');
-            $pengetahuan_eksplisit->lampiran = $this->POST('lampiran');
-            $pengetahuan_eksplisit->status = $this->POST('status');
-            $pengetahuan_eksplisit->created_at = $this->POST('created_at');
-            $pengetahuan_eksplisit->updated_at = $this->POST('updated_at');
-            $pengetahuan_eksplisit->save();
+            $bagian = new Bagian_m();
+            $bagian->id_bagian = $this->POST('id_bagian');
+            $bagian->bagian = $this->POST('bagian');
+            $bagian->deskripsi = $this->POST('deskripsi');
+            $bagian->created_at = $this->POST('created_at');
+            $bagian->updated_at = $this->POST('updated_at');
+            $bagian->save();
             $this->flashmsg('Data successfully added');
-            redirect('test/add_pengetahuan_eksplisit');
+            redirect('test/add_bagian');
         }
 
-        $this->data['title'] = 'Add Pengetahuan Eksplisit';
-        $this->data['content'] = 'add_pengetahuan_eksplisit';
+        $this->data['title'] = 'Add Bagian';
+        $this->data['content'] = 'add_bagian';
         $this->template($this->data, $this->module);
     }
 
-    public function edit_pengetahuan_eksplisit()
+    public function edit_bagian()
     {
-        $this->data['id_eksplisit'] = $this->uri->segment(3);
-        $this->check_allowance(!isset($this->data['id_eksplisit']));
+        $this->data['id_bagian'] = $this->uri->segment(3);
+        $this->check_allowance(!isset($this->data['id_bagian']));
 
-        $this->load->model('Pengetahuan_eksplisit_m');
-        $this->data['pengetahuan_eksplisit'] = Pengetahuan_eksplisit_m::find($this->data['id_eksplisit']);
-        $this->check_allowance(!isset($this->data['pengetahuan_eksplisit']), ['Data not found', 'danger']);
+        $this->load->model('Bagian_m');
+        $this->data['bagian'] = Bagian_m::find($this->data['id_bagian']);
+        $this->check_allowance(!isset($this->data['bagian']), ['Data not found', 'danger']);
 
         if ($this->POST('submit'))
         {
-            $this->data['pengetahuan_eksplisit']->id_eksplisit = $this->POST('id_eksplisit');
-            $this->data['pengetahuan_eksplisit']->id_kategori = $this->POST('id_kategori');
-            $this->data['pengetahuan_eksplisit']->id_pengguna = $this->POST('id_pengguna');
-            $this->data['pengetahuan_eksplisit']->judul = $this->POST('judul');
-            $this->data['pengetahuan_eksplisit']->keterangan = $this->POST('keterangan');
-            $this->data['pengetahuan_eksplisit']->referensi = $this->POST('referensi');
-            $this->data['pengetahuan_eksplisit']->lampiran = $this->POST('lampiran');
-            $this->data['pengetahuan_eksplisit']->status = $this->POST('status');
-            $this->data['pengetahuan_eksplisit']->created_at = $this->POST('created_at');
-            $this->data['pengetahuan_eksplisit']->updated_at = $this->POST('updated_at');
-            $this->data['pengetahuan_eksplisit']->save();
+            $this->data['bagian']->id_bagian = $this->POST('id_bagian');
+            $this->data['bagian']->bagian = $this->POST('bagian');
+            $this->data['bagian']->deskripsi = $this->POST('deskripsi');
+            $this->data['bagian']->created_at = $this->POST('created_at');
+            $this->data['bagian']->updated_at = $this->POST('updated_at');
+            $this->data['bagian']->save();
             $this->flashmsg('Data successfully edited');
-            redirect('test/edit_pengetahuan_eksplisit/' . $this->data['id_eksplisit']);
+            redirect('test/edit_bagian/' . $this->data['id_bagian']);
         }
 
-        $this->data['title'] = 'Edit Pengetahuan Eksplisit';
-        $this->data['content'] = 'edit_pengetahuan_eksplisit';
+        $this->data['title'] = 'Edit Bagian';
+        $this->data['content'] = 'edit_bagian';
         $this->template($this->data, $this->module);
     }
 

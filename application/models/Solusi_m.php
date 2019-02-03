@@ -7,6 +7,7 @@ class Solusi_m extends Eloquent
 {
     protected $table        = 'solusi';
     protected $primaryKey   = 'id_solusi';
+    protected $fillable		= ['id_masalah', 'solusi'];
 
     public function masalah()
     {

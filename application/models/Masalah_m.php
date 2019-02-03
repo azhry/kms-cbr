@@ -19,4 +19,10 @@ class Masalah_m extends Eloquent
     	require_once __DIR__ . '/Gejala_masalah_m.php';
         return $this->hasMany('Gejala_masalah_m', 'id_masalah', 'id_masalah');
     }
+
+    public function solusi()
+    {
+        require_once __DIR__ . '/Solusi_m.php';
+        return $this->hasMany('Solusi_m', 'id_masalah', 'id_masalah');
+    }
 }
