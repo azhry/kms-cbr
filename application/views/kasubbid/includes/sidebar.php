@@ -17,18 +17,90 @@
                     </a>
                 </li>
                 <li>
-                    <a href="<?= base_url('kasubbid/problem-solving') ?>">
-                        <span class="title">Problem Solving</span>
+                    <a href="javascript:;">
+                    <span class="title">Data Problem</span>
+                    <span class="arrow "></span>
+                    </a>
+                    <ul class="sub-menu">
+                        <li>
+                            <a href="<?= base_url('kasubbid/problem-solving') ?>">
+                                <span class="title">Problem Solving</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="<?= base_url('kasubbid/gejala') ?>">
+                                <span class="title">Gejala</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="<?= base_url('kasubbid/masalah') ?>">
+                                <span class="title">Kasus</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="javascript:;">
+                    <span class="title">Data Pengguna</span>
+                    <span class="arrow "></span>
+                    </a>
+                    <ul class="sub-menu">
+                        <li>
+                            <a href="<?= base_url('kasubbid/pengguna') ?>">
+                                <span class="title">Pengguna</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="<?= base_url('kasubbid/reward') ?>">
+                                <span class="title">Reward</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="javascript:;">
+                    <span class="title">Data Pengetahuan</span>
+                    <span class="arrow "></span>
+                    </a>
+                    <ul class="sub-menu">
+                        <li>
+                            <a href="<?= base_url('kasubbid/pengetahuan-tacit') ?>">
+                                <span class="title">Tacit</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="<?= base_url('kasubbid/pengetahuan-eksplisit') ?>">
+                                <span class="title">Eksplisit</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="javascript:;">
+                    <span class="title">Validasi Pengetahuan</span>
+                    <span class="arrow "></span>
+                    </a>
+                    <ul class="sub-menu">
+                        <li>
+                            <a href="<?= base_url('kasubbid/validasi-tacit') ?>">
+                                <span class="title">Tacit</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="<?= base_url('kasubbid/validasi-eksplisit') ?>">
+                                <span class="title">Eksplisit</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="<?= base_url('kasubbid/kategori') ?>">
+                        <span class="title">Data Kategori</span>
                     </a>
                 </li>
                 <li>
-                    <a href="<?= base_url('kasubbid/gejala') ?>">
-                        <span class="title">Gejala</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="<?= base_url('kasubbid/masalah') ?>">
-                        <span class="title">Masalah</span>
+                    <a href="<?= base_url('kasubbid/bagian') ?>">
+                        <span class="title">Data Bagian</span>
                     </a>
                 </li>
             </ul>

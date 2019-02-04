@@ -14,4 +14,30 @@ class Pengguna_m extends Eloquent
         return $this->hasOne('Role_m', 'id_role', 'id_role');
     }
 
+    public function tacit()
+    {
+    	require_once __DIR__ . '/Pengetahuan_tacit_m.php';
+        return $this->hasMany('Pengetahuan_tacit_m', 'id_pengguna', 'id_pengguna');
+    }
+
+    public function eksplisit()
+    {
+    	require_once __DIR__ . '/Pengetahuan_eksplisit_m.php';
+        return $this->hasMany('Pengetahuan_eksplisit_m', 'id_pengguna', 'id_pengguna');
+    }
+
+    public function tacit_tervalidasi()
+    {
+    	require_once __DIR__ . '/Pengetahuan_tacit_m.php';
+        return $this->hasMany('Pengetahuan_tacit_m', 'id_pengguna', 'id_pengguna')
+        		->where('status', 'Valid');
+    }
+
+    public function eksplisit_tervalidasi()
+    {
+    	require_once __DIR__ . '/Pengetahuan_eksplisit_m.php';
+        return $this->hasMany('Pengetahuan_eksplisit_m', 'id_pengguna', 'id_pengguna')
+        		->where('status', 'Valid');
+    }
+
 }

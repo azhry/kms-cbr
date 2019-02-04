@@ -254,7 +254,7 @@ class RoboFile extends \Robo\Tasks
 
     private function get_columns($table)
     {
-        $sql = 'SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = \'' . $table . '\'';
+        $sql = 'SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = \'' . $this->dbname . '\' AND TABLE_NAME = \'' . $table . '\'';
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);

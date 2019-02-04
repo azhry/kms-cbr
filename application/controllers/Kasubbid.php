@@ -14,11 +14,57 @@ class Kasubbid extends MY_Controller
         }
         $this->data['id_pengguna']  = $this->session->userdata('id_pengguna');
         $this->data['nip']          = $this->session->userdata('nip');
+        $this->load->model('Pengguna_m');
+		$this->data['data_pengguna']	= Pengguna_m::find($this->data['id_pengguna']);
 	}
 
 	public function index()
 	{
+		$this->load->model('Pengguna_m');
+		$this->load->model('Pengetahuan_tacit_m');
+		$this->load->model('Pengetahuan_eksplisit_m');
+		$this->load->model('Masalah_m');
+		$this->data['pengguna']					= Pengguna_m::get();
+		$this->data['pengetahuan_tacit']		= Pengetahuan_tacit_m::get();
+		$this->data['pengetahuan_eksplisit']	= Pengetahuan_eksplisit_m::get();
+		$this->data['masalah']					= Masalah_m::get();
+		$this->data['title']					= 'Dashboard';
+		$this->data['content']					= 'dashboard';
+		$this->template($this->data, $this->module);
+	}
 
+	public function profile()
+	{
+		if ($this->POST('submit'))
+		{
+			$this->data['data_pengguna']->nama = $this->POST('nama');
+			$this->data['data_pengguna']->jenis_kelamin = $this->POST('jenis_kelamin');
+			$this->data['data_pengguna']->tempat_lahir = $this->POST('tempat_lahir');
+			$this->data['data_pengguna']->tanggal_lahir = $this->POST('tanggal_lahir');
+
+			$password = $this->POST('password');
+			if (!empty($password))
+			{
+				$rpassword = $this->POST('rpassword');
+				if ($password != $rpassword)
+				{
+					$this->flashmsg('Password harus sama dengan konfirmasi password', 'danger');
+					redirect('kasubbid/profile');
+				}
+
+				$this->data['data_pengguna']->password = md5($password);
+			}
+
+			$this->data['data_pengguna']->save();
+			$this->upload($this->data['data_pengguna']->id_pengguna . '.jpg', 'assets/foto', 'foto');
+
+			$this->flashmsg('Data successfully saved');
+			redirect('kasubbid/profile');
+		}
+
+		$this->data['title']	= 'Profile';
+		$this->data['content']	= 'profile';
+		$this->template($this->data, $this->module);
 	}
 
 	public function problem_solving()
@@ -399,29 +445,172 @@ class Kasubbid extends MY_Controller
     }
 
 	public function reward()
-	{
-		
-	}
+    {
+        $this->data['id_reward'] = $this->uri->segment(3);
+        $this->load->model('Reward_m');
+        if (isset($this->data['id_reward']))
+        {
+            $data = Reward_m::find($this->data['id_reward']);
+            $data->delete();
+            $this->flashmsg('Data successfully deleted');
+            redirect('kasubbid/reward');
+        }
 
-	public function tambah_reward()
-	{
-		
-	}
+        $this->data['reward'] = Reward_m::get();
+        $this->data['title'] = 'Reward';
+        $this->data['content'] = 'reward';
+        $this->template($this->data, $this->module);
+    }
+
+    public function detail_reward()
+    {
+        $this->data['id_reward'] = $this->uri->segment(3);
+        $this->check_allowance(!isset($this->data['id_reward']));
+
+        $this->load->model('Reward_m');
+        $this->data['reward'] = Reward_m::with('penerima')->find($this->data['id_reward']);
+        $this->check_allowance(!isset($this->data['reward']), ['Data not found', 'danger']);
+        $this->data['title'] = 'Detail Reward';
+        $this->data['content'] = 'detail_reward';
+        $this->template($this->data, $this->module);
+    }
+
+    public function add_reward()
+    {
+        $this->load->model('Reward_m');
+        if ($this->POST('submit'))
+        {
+            $reward = new Reward_m();
+            $reward->reward = $this->POST('reward');
+            $reward->poin = $this->POST('poin');
+            $reward->keterangan = $this->POST('keterangan');
+            $reward->save();
+            $this->flashmsg('Data successfully added');
+            redirect('kasubbid/add_reward');
+        }
+
+        $this->data['title'] = 'Add Reward';
+        $this->data['content'] = 'add_reward';
+        $this->template($this->data, $this->module);
+    }
+
+    public function edit_reward()
+    {
+        $this->data['id_reward'] = $this->uri->segment(3);
+        $this->check_allowance(!isset($this->data['id_reward']));
+
+        $this->load->model('Reward_m');
+        $this->data['reward'] = Reward_m::find($this->data['id_reward']);
+        $this->check_allowance(!isset($this->data['reward']), ['Data not found', 'danger']);
+
+        if ($this->POST('submit'))
+        {
+            $this->data['reward']->reward = $this->POST('reward');
+            $this->data['reward']->poin = $this->POST('poin');
+            $this->data['reward']->keterangan = $this->POST('keterangan');
+            $this->data['reward']->save();
+            $this->flashmsg('Data successfully edited');
+            redirect('kasubbid/edit_reward/' . $this->data['id_reward']);
+        }
+
+        $this->data['title'] = 'Edit Reward';
+        $this->data['content'] = 'edit_reward';
+        $this->template($this->data, $this->module);
+    }
 
 	public function pengguna()
-	{
-		
-	}
+    {
+        $this->data['id_pengguna'] = $this->uri->segment(3);
+        $this->load->model('Pengguna_m');
+        if (isset($this->data['id_pengguna']))
+        {
+            $data = Pengguna_m::find($this->data['id_pengguna']);
+            $data->delete();
+            $this->flashmsg('Data successfully deleted');
+            redirect('kasubbid/pengguna');
+        }
 
-	public function tambah_pengguna()
-	{
-		
-	}
+        $this->data['pengguna'] = Pengguna_m::get();
+        $this->data['title'] = 'Pengguna';
+        $this->data['content'] = 'pengguna';
+        $this->template($this->data, $this->module);
+    }
 
-	public function edit_pengguna()
-	{
-		
-	}
+    public function detail_pengguna()
+    {
+        $this->data['id_pengguna'] = $this->uri->segment(3);
+        $this->check_allowance(!isset($this->data['id_pengguna']));
+
+        $this->load->model('Pengguna_m');
+        $this->data['pengguna'] = Pengguna_m::with(['tacit', 'eksplisit', 'tacit_tervalidasi', 'eksplisit_tervalidasi'])
+        							->find($this->data['id_pengguna']);
+        $this->check_allowance(!isset($this->data['pengguna']), ['Data not found', 'danger']);
+        $this->data['title'] = 'Detail Pengguna';
+        $this->data['content'] = 'detail_pengguna';
+        $this->template($this->data, $this->module);
+    }
+
+    public function add_pengguna()
+    {
+        $this->load->model('Pengguna_m');
+        if ($this->POST('submit'))
+        {
+        	$password = $this->POST('password');
+        	$rpassword = $this->POST('rpassword');
+        	if ($password != $rpassword)
+        	{
+        		$this->flashmsg('Password harus sama dengan konfirmasi password', 'warning');
+        		redirect('kasubbid/add-pengguna');
+        	}
+
+            $pengguna = new Pengguna_m();
+            $pengguna->nip = $this->POST('nip');
+            $pengguna->id_role = $this->POST('id_role');
+            $pengguna->nama = $this->POST('nama');
+            $pengguna->jenis_kelamin = $this->POST('jenis_kelamin');
+            $pengguna->tempat_lahir = $this->POST('tempat_lahir');
+            $pengguna->tanggal_lahir = $this->POST('tanggal_lahir');
+            $pengguna->password = md5($password);
+            $pengguna->save();
+            $this->flashmsg('Data successfully added');
+            redirect('kasubbid/add_pengguna');
+        }
+
+        $this->load->model('Role_m');
+        $this->data['role'] = Role_m::get();
+        $this->data['title'] = 'Add Pengguna';
+        $this->data['content'] = 'add_pengguna';
+        $this->template($this->data, $this->module);
+    }
+
+    public function edit_pengguna()
+    {
+        $this->data['id_pengguna'] = $this->uri->segment(3);
+        $this->check_allowance(!isset($this->data['id_pengguna']));
+
+        $this->load->model('Pengguna_m');
+        $this->data['pengguna'] = Pengguna_m::find($this->data['id_pengguna']);
+        $this->check_allowance(!isset($this->data['pengguna']), ['Data not found', 'danger']);
+
+        if ($this->POST('submit'))
+        {
+            $this->data['pengguna']->nip = $this->POST('nip');
+            $this->data['pengguna']->id_role = $this->POST('id_role');
+            $this->data['pengguna']->nama = $this->POST('nama');
+            $this->data['pengguna']->jenis_kelamin = $this->POST('jenis_kelamin');
+            $this->data['pengguna']->tempat_lahir = $this->POST('tempat_lahir');
+            $this->data['pengguna']->tanggal_lahir = $this->POST('tanggal_lahir');
+            $this->data['pengguna']->save();
+            $this->flashmsg('Data successfully edited');
+            redirect('kasubbid/edit_pengguna/' . $this->data['id_pengguna']);
+        }
+
+        $this->load->model('Role_m');
+        $this->data['role'] = Role_m::get();
+        $this->data['title'] = 'Edit Pengguna';
+        $this->data['content'] = 'edit_pengguna';
+        $this->template($this->data, $this->module);
+    }
 
 	public function masalah()
     {

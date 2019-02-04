@@ -8,10 +8,10 @@ class Reward_m extends Eloquent
     protected $table        = 'reward';
     protected $primaryKey   = 'id_reward';
 
-    public function pengguna()
+    public function penerima()
     {
-        require_once __DIR__ . '/Pengguna_m.php';
-        return $this->hasOne('Pengguna_m', 'id_pengguna', 'id_pengguna');
+        require_once __DIR__ . '/Penerima_reward_m.php';
+        return $this->hasMany('Penerima_reward_m', 'id_reward', 'id_reward');
     }
 
 }

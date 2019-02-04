@@ -50,10 +50,11 @@ class MY_Controller extends CI_Controller
 			@unlink($upload_path . '/' . $id);
 			$config = [
 				'file_name' 		=> $id,
-				'allowed_types'		=> 'jpg|png|bmp|jpeg|xls|xlsx|pdf|doc|docx',
+				'allowed_types'		=> '*',
 				'upload_path'		=> $upload_path,
 				'max_size'			=> $max_size
 			];
+
 			$this->load->library('upload');
 			$this->upload->initialize($config);
 			return $this->upload->do_upload($tag_name);

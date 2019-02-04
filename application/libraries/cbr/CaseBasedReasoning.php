@@ -96,16 +96,22 @@ class CaseBasedReasoning
 
 	private function distance($x, $y)
 	{
-		if (count($x) !== count($y))
-		{
-			throw new InvalidArgumentException('Size of given arrays does not match');
-		}
-
 		$sum = 0;
-		foreach ($x as $i => $val)
+		if (count($x) > count($y))
 		{
-			$sum += ($val - $y[$i]) ** 2;
+			foreach ($y as $i => $val)
+			{
+				$sum += ($val - $x[$i]) ** 2;
+			}
 		}
+		else
+		{
+			foreach ($x as $i => $val)
+			{
+				$sum += ($val - $y[$i]) ** 2;
+			}
+		}
+		
 		return sqrt((float)$sum);
 	}
 }

@@ -26,14 +26,14 @@
                     <li class="dropdown dropdown-user dropdown-dark">
                         <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
                         <span class="username username-hide-on-mobile">
-                        Admin </span>
+                        <?= $data_pengguna->nama ?> </span>
                         <!-- DOC: Do not remove below empty space(&nbsp;) as its purposely used -->
-                        <img alt="" class="img-circle" src="<?= base_url('assets/metronic') ?>/assets/admin/layout4/img/avatar9.jpg"/>
+                        <img alt="" class="img-circle" src="<?= file_exists(FCPATH . 'assets/foto/' . $data_pengguna->id_pengguna . '.jpg') ? base_url('assets/foto/' . $data_pengguna->id_pengguna . '.jpg') : 'http://placehold.it/200' ?>"/>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-default">
                             <li>
-                                <a href="#">
-                                <i class="icon-user"></i> My Profile </a>
+                                <a href="<?= base_url('kasubbid/profile') ?>">
+                                <i class="icon-user"></i> Profile </a>
                             </li>
                             <li class="divider">
                             </li>

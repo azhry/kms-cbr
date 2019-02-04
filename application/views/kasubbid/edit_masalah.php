@@ -6,7 +6,7 @@
 			<div class="portlet box green">
 				<div class="portlet-title">
 					<div class="caption">
-						Tambah Masalah
+						Edit Masalah
 					</div>
 				</div>
 				<div class="portlet-body">
