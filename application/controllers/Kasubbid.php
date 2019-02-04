@@ -21,6 +21,26 @@ class Kasubbid extends MY_Controller
 
 	}
 
+	public function problem_solving()
+	{
+		$this->load->model('Gejala_m');
+		$this->data['gejala'] 	= Gejala_m::get();
+
+		if ($this->POST('submit'))
+		{
+			require_once APPPATH . 'libraries/cbr/CaseBasedReasoning.php';
+			$cbr = new CaseBasedReasoning($this->data['gejala']);
+			$this->load->model('Masalah_m');
+			$this->data['masalah'] = Masalah_m::with('solusi')->get();
+			$cbr->fit2($this->data['masalah']);
+			$this->data['solusi'] = $cbr->rank($this->POST('gejala'));
+		}
+
+		$this->data['title']	= 'Problem Solving';
+		$this->data['content']	= 'problem_solving';
+		$this->template($this->data, $this->module);
+	}
+
 	public function pengetahuan_tacit()
     {
         $this->data['id_tacit'] = $this->uri->segment(3);

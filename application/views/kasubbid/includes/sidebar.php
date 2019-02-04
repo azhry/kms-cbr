@@ -12,21 +12,23 @@
             <!-- DOC: Set data-auto-speed="200" to adjust the sub menu slide up/down speed -->
             <ul class="page-sidebar-menu " data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200">
                 <li>
-                    <a href="<?= base_url('home') ?>">
-                        <i class="fa fa-home"></i>
-                        <span class="title">Home</span>
+                    <a href="<?= base_url('kasubbid') ?>">
+                        <span class="title">Dashboard</span>
                     </a>
                 </li>
                 <li>
-                    <a href="<?= base_url('home/data') ?>">
-                        <i class="fa fa-list"></i> 
-                        <span class="title">Data</span>
+                    <a href="<?= base_url('kasubbid/problem-solving') ?>">
+                        <span class="title">Problem Solving</span>
                     </a>
                 </li>
                 <li>
-                    <a href="<?= base_url('home/analysis') ?>">
-                        <i class="fa fa-line-chart"></i> 
-                        <span class="title">Analysis</span>
+                    <a href="<?= base_url('kasubbid/gejala') ?>">
+                        <span class="title">Gejala</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="<?= base_url('kasubbid/masalah') ?>">
+                        <span class="title">Masalah</span>
                     </a>
                 </li>
             </ul>

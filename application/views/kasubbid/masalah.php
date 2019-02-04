@@ -45,9 +45,6 @@
 									</td>
 									<td>
 										<div class="btn-group">
-											<a href="<?= base_url('kasubbid/detail-masalah/' . $row->id_masalah) ?>" class="btn blue">
-												<i class="fa fa-eye"></i>
-											</a>
 											<a href="<?= base_url('kasubbid/edit-masalah/' . $row->id_masalah) ?>" class="btn green">
 												<i class="fa fa-edit"></i>
 											</a>

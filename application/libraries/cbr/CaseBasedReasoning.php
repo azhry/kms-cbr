@@ -2,7 +2,6 @@
 
 class CaseBasedReasoning
 {
-	private $ci;
 	private $attributes;
 	private $matrix;
 	private $distances;
@@ -10,7 +9,6 @@ class CaseBasedReasoning
 
 	public function __construct($attributes)
 	{
-		$this->ci =& get_instance();
 		$this->attributes 	= $attributes;
 		$this->matrix 		= [];
 		$this->distances	= [];
@@ -23,12 +21,14 @@ class CaseBasedReasoning
 		foreach ($data as $record)
 		{
 			$row = [];
-			$attributeIds = array_column((array)$record->gejala, 'id_gejala');
+			$attributeIds = array_column($record->gejala->toArray(), 'id_gejala');
 			foreach ($this->attributes as $attributes)
 			{
 				if (in_array($attributes->id_gejala, $attributeIds))
 				{
-					$row []= $record->gejala[array_search($attributes->id_gejala, $attributeIds)]->representasi;
+					$row []= $record->gejala[array_search($attributes->id_gejala, $attributeIds)]
+								->gejala
+								->representasi;
 				}
 				else
 				{
@@ -41,15 +41,55 @@ class CaseBasedReasoning
 		return $this->matrix;
 	}
 
+	public function fit2($data, $excludedKeys = [])
+	{
+		$this->matrix 	= [];
+		$this->data 	= $data;
+		$numAttr = 0;
+		foreach ($data as $record)
+		{
+			$attributeIds = array_column($record->gejala->toArray(), 'id_gejala');
+			$num = count($attributeIds);
+			if ($num > $numAttr)
+			{
+				$numAttr = $num;
+			}
+		}
+
+		foreach ($data as $record)
+		{
+			$row = [];
+			$attributeIds = array_column($record->gejala->toArray(), 'id_gejala');
+			for ($i = 0; $i < $numAttr; $i++)
+			{
+				if (isset($record->gejala[$i]))
+				{
+					$row []= $record->gejala[$i]
+								->gejala
+								->representasi;
+				}
+				else
+				{
+					$row []= 0;
+				}
+			}
+
+			$this->matrix []= $row;
+		}
+
+		return $this->matrix;
+	}
+
 	public function rank($problem)
 	{
 		$this->distances = [];
-		foreach ($this->matrix as $row)
+		$data = $this->data->toArray();
+		foreach ($this->matrix as $i => $row)
 		{
-			$this->distances []= $this->distance($row, $problem);
+			$data[$i]['distance'] = $this->distance($row, $problem);
+			$this->distances []= $data[$i]['distance'];
 		}
 
-		$data = $this->data;
 		array_multisort($this->distances, SORT_ASC, $data);
 		return $data;
 	}
@@ -66,7 +106,6 @@ class CaseBasedReasoning
 		{
 			$sum += ($val - $y[$i]) ** 2;
 		}
-
 		return sqrt((float)$sum);
 	}
 }
