@@ -32,7 +32,7 @@
                         </a>
                         <ul class="dropdown-menu dropdown-menu-default">
                             <li>
-                                <a href="<?= base_url('anggota-lumbung/profile') ?>">
+                                <a href="<?= base_url('unit/profile') ?>">
                                 <i class="icon-user"></i> Profile </a>
                             </li>
                             <li class="divider">

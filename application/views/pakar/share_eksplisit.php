@@ -24,6 +24,17 @@
 									<?= $row->created_at ?></a>
 								</li>
 								<li>
+									<?php  
+										$likes = $row->like->toArray();
+										$likePengguna = array_column($likes, 'id_pengguna');
+										$likeCount = $row->like->count();
+									?>
+									<input type="hidden" value="<?= $likeCount ?>">
+									<i class="fa fa-thumbs-up" <?= in_array($id_pengguna, $likePengguna) ? 'style="color: blue;"' : '' ?>></i>
+									<a href="javascript:;" onclick="set_like(<?= $row->id_eksplisit ?>, this)">
+									<?= $likeCount  . ' Menyukai' ?> </a>
+								</li>
+								<li>
 									<i class="fa fa-comments"></i>
 									<a href="javascript:;">
 									<?= count($row->komentar) . ' Komentar' ?> </a>
@@ -49,3 +60,32 @@
 	</div>
 	<!-- END PAGE CONTENT INNER -->
 </div>
+
+<script type="text/javascript">
+	function set_like(id_eksplisit, obj) {
+		let current_likes = $(obj).prev().prev().val();
+		$.ajax({
+			url: '<?= base_url('pakar/share-eksplisit') ?>',
+			type: 'POST',
+			data: {
+				like: true,
+				id_eksplisit: id_eksplisit
+			},
+			success: function(response) {
+				const json = $.parseJSON(response);
+				if (json.response == 'like') {
+					$(obj).prev().css('color', 'blue');
+					current_likes++;
+					$(obj).text(current_likes + ' Menyukai');
+				} else {
+					$(obj).prev().css('color', '');
+					current_likes--;
+					$(obj).text(current_likes + ' Menyukai');
+				}
+				$(obj).prev().prev().val(current_likes);
+			},
+			error: function(err) { console.log(err.responseText); }
+		});
+		return false;
+	}
+</script>

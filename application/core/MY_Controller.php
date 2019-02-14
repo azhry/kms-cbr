@@ -2,7 +2,7 @@
 
 class MY_Controller extends CI_Controller
 {
-  	private $title = 'KMS CBR';
+  	private $title = 'Knowledge Management System PTPN 7 Unit Usaha Sungai Lengi Bagian Pemeliharaan Tanaman';
 	
 	public function __construct()
 	{

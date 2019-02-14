@@ -27,4 +27,10 @@ class Pengetahuan_eksplisit_m extends Eloquent
                 ->orderBy('created_at', 'DESC');   
     }
 
+    public function like()
+    {
+        require_once __DIR__ . '/Like_eksplisit_m.php';
+        return $this->hasMany('Like_eksplisit_m', 'id_eksplisit', 'id_eksplisit');
+    }
+
 }

@@ -10,7 +10,7 @@
 					</div>
 				</div>
 				<div class="portlet-body">
-					<a class="btn green" href="<?= base_url('anggota-lumbung/add-pengetahuan-tacit') ?>">
+					<a class="btn green" href="<?= base_url('unit/add-pengetahuan-tacit') ?>">
 						<i class="fa fa-plus"></i> Tambah Data
 					</a>
 					<br><br>
@@ -35,13 +35,13 @@
 									<td><?= $row->status ?></td>
 									<td>
 										<div class="btn-group">
-											<a href="<?= base_url('anggota-lumbung/detail-pengetahuan-tacit/' . $row->id_tacit) ?>" class="btn blue">
+											<a href="<?= base_url('unit/detail-pengetahuan-tacit/' . $row->id_tacit) ?>" class="btn blue">
 												<i class="fa fa-eye"></i>
 											</a>
-											<a href="<?= base_url('anggota-lumbung/edit-pengetahuan-tacit/' . $row->id_tacit) ?>" class="btn green">
+											<a href="<?= base_url('unit/edit-pengetahuan-tacit/' . $row->id_tacit) ?>" class="btn green">
 												<i class="fa fa-edit"></i>
 											</a>
-											<a href="<?= base_url('anggota-lumbung/pengetahuan-tacit/' . $row->id_tacit) ?>" class="btn red">
+											<a href="<?= base_url('unit/pengetahuan-tacit/' . $row->id_tacit) ?>" class="btn red">
 												<i class="fa fa-trash"></i>
 											</a>
 										</div>

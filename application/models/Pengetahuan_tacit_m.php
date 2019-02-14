@@ -26,4 +26,10 @@ class Pengetahuan_tacit_m extends Eloquent
         return $this->hasMany('Komentar_tacit_m', 'id_tacit', 'id_tacit')
                 ->orderBy('created_at', 'DESC');   
     }
+
+    public function like()
+    {
+        require_once __DIR__ . '/Like_tacit_m.php';
+        return $this->hasMany('Like_tacit_m', 'id_tacit', 'id_tacit');
+    }
 }

@@ -3,7 +3,7 @@
     <div class="row margin-top-10">
         <div class="col-md-12">
             <h2>Selamat Datang.</h2>
-            <a href="<?= base_url('anggota-lumbung/pengetahuan-tacit')?>">
+            <a href="<?= base_url('unit/pengetahuan-tacit')?>">
                 <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
                     <div class="dashboard-stat red">
                         <div class="visual">
@@ -17,13 +17,13 @@
                                 Pengetahuan Tacit Saya
                             </div>
                         </div>
-                        <a class="more" href="<?= base_url('anggota-lumbung/pengetahuan-tacit')?>">
+                        <a class="more" href="<?= base_url('unit/pengetahuan-tacit')?>">
                             View more <i class="m-icon-swapright m-icon-white"></i>
                         </a>
                     </div>
                 </div>
             </a>
-            <a href="<?= base_url('anggota-lumbung/pengetahuan-eksplisit')?>">
+            <a href="<?= base_url('unit/pengetahuan-eksplisit')?>">
                 <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
                     <div class="dashboard-stat green">
                         <div class="visual">
@@ -37,7 +37,7 @@
                                 Pengetahuan Eksplisit Saya
                             </div>
                         </div>
-                        <a class="more" href="<?= base_url('anggota-lumbung/pengetahuan-eksplisit')?>">
+                        <a class="more" href="<?= base_url('unit/pengetahuan-eksplisit')?>">
                             View more <i class="m-icon-swapright m-icon-white"></i>
                         </a>
                     </div>

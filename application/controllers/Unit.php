@@ -1,11 +1,11 @@
 <?php 
 
-class Anggota_lumbung extends MY_Controller
+class Unit extends MY_Controller
 {
 	public function __construct()
 	{
 		parent::__construct();
-		$this->module = 'anggota_lumbung';
+		$this->module = 'unit';
         $this->data['id_role']  = $this->session->userdata('id_role');
         if (!isset($this->data['id_role']) or $this->data['id_role'] != 3)
         {
@@ -45,7 +45,7 @@ class Anggota_lumbung extends MY_Controller
 				if ($password != $rpassword)
 				{
 					$this->flashmsg('Password harus sama dengan konfirmasi password', 'danger');
-					redirect('anggota-lumbung/profile');
+					redirect('unit/profile');
 				}
 
 				$this->data['data_pengguna']->password = md5($password);
@@ -55,7 +55,7 @@ class Anggota_lumbung extends MY_Controller
 			$this->upload($this->data['data_pengguna']->id_pengguna . '.jpg', 'assets/foto', 'foto');
 
 			$this->flashmsg('Data successfully saved');
-			redirect('anggota-lumbung/profile');
+			redirect('unit/profile');
 		}
 
 		$this->data['title']	= 'Profile';
@@ -92,7 +92,7 @@ class Anggota_lumbung extends MY_Controller
             $data = Masalah_m::find($this->data['id_masalah']);
             $data->delete();
             $this->flashmsg('Data successfully deleted');
-            redirect('anggota-lumbung/masalah');
+            redirect('unit/masalah');
         }
 
         $this->data['masalah'] = Masalah_m::get();
@@ -134,7 +134,7 @@ class Anggota_lumbung extends MY_Controller
             Solusi_m::insert($solusi);
 
             $this->flashmsg('Data successfully added');
-            redirect('anggota-lumbung/add_masalah');
+            redirect('unit/add_masalah');
         }
 
         $this->load->model('Gejala_m');
@@ -190,7 +190,7 @@ class Anggota_lumbung extends MY_Controller
             Solusi_m::insert($solusi);
 
             $this->flashmsg('Data successfully edited');
-            redirect('anggota-lumbung/edit_masalah/' . $this->data['id_masalah']);
+            redirect('unit/edit_masalah/' . $this->data['id_masalah']);
         }
 
         $this->load->model('Gejala_m');
@@ -213,7 +213,7 @@ class Anggota_lumbung extends MY_Controller
             $data = Pengetahuan_tacit_m::find($this->data['id_tacit']);
             $data->delete();
             $this->flashmsg('Data successfully deleted');
-            redirect('anggota-lumbung/pengetahuan_tacit');
+            redirect('unit/pengetahuan_tacit');
         }
 
         $this->data['pengetahuan_tacit'] = Pengetahuan_tacit_m::where('id_pengguna', $this->data['id_pengguna'])->get();
@@ -241,7 +241,7 @@ class Anggota_lumbung extends MY_Controller
         	$komentar->save();
 
         	$this->flashmsg('Comment successfully added');
-            redirect('anggota-lumbung/detail_pengetahuan_tacit/' . $this->data['id_tacit']);
+            redirect('unit/detail_pengetahuan_tacit/' . $this->data['id_tacit']);
 
         }
 
@@ -263,7 +263,7 @@ class Anggota_lumbung extends MY_Controller
             $pengetahuan_tacit->isi = $this->POST('isi');
             $pengetahuan_tacit->save();
             $this->flashmsg('Data successfully added');
-            redirect('anggota-lumbung/add_pengetahuan_tacit');
+            redirect('unit/add_pengetahuan_tacit');
         }
 
         $this->load->model('Kategori_m');
@@ -289,7 +289,7 @@ class Anggota_lumbung extends MY_Controller
             $this->data['pengetahuan_tacit']->isi = $this->POST('isi');
             $this->data['pengetahuan_tacit']->save();
             $this->flashmsg('Data successfully edited');
-            redirect('anggota-lumbung/edit_pengetahuan_tacit/' . $this->data['id_tacit']);
+            redirect('unit/edit_pengetahuan_tacit/' . $this->data['id_tacit']);
         }
 
         $this->load->model('Kategori_m');
@@ -309,7 +309,7 @@ class Anggota_lumbung extends MY_Controller
             @unlink(FCPATH . 'assets/lampiran/' . $data->lampiran);
             $data->delete();
             $this->flashmsg('Data successfully deleted');
-            redirect('anggota-lumbung/pengetahuan_eksplisit');
+            redirect('unit/pengetahuan_eksplisit');
         }
 
         $this->data['pengetahuan_eksplisit'] = Pengetahuan_eksplisit_m::where('id_pengguna', $this->data['id_pengguna'])->get();
@@ -337,7 +337,7 @@ class Anggota_lumbung extends MY_Controller
         	$komentar->save();
 
         	$this->flashmsg('Comment successfully added');
-            redirect('anggota-lumbung/detail_pengetahuan_eksplisit/' . $this->data['id_eksplisit']);
+            redirect('unit/detail_pengetahuan_eksplisit/' . $this->data['id_eksplisit']);
 
         }
 
@@ -364,7 +364,7 @@ class Anggota_lumbung extends MY_Controller
             $this->upload($_FILES['lampiran']['name'], 'assets/lampiran', 'lampiran');
 
             $this->flashmsg('Data successfully added');
-            redirect('anggota-lumbung/add_pengetahuan_eksplisit');
+            redirect('unit/add_pengetahuan_eksplisit');
         }
 
         $this->load->model('Kategori_m');
@@ -399,7 +399,7 @@ class Anggota_lumbung extends MY_Controller
             $this->data['pengetahuan_eksplisit']->save();
 
             $this->flashmsg('Data successfully edited');
-            redirect('anggota-lumbung/edit_pengetahuan_eksplisit/' . $this->data['id_eksplisit']);
+            redirect('unit/edit_pengetahuan_eksplisit/' . $this->data['id_eksplisit']);
         }
 
         $this->load->model('Kategori_m');
@@ -451,7 +451,7 @@ class Anggota_lumbung extends MY_Controller
             {
             	$this->flashmsg('Reward gagal diambil. Poin anda kurang.', 'danger');
             }
-            redirect('anggota-lumbung/reward');
+            redirect('unit/reward');
         }
 
         $this->data['reward'] = Reward_m::get();

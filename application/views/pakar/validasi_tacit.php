@@ -42,7 +42,7 @@
 <script type="text/javascript">
 	function validasi(id, obj) {
 		$.ajax({
-			url: '<?= base_url('kasubbid/validasi-tacit') ?>',
+			url: '<?= base_url('pakar/validasi-tacit') ?>',
 			type: 'POST',
 			data: {
 				validate: true,

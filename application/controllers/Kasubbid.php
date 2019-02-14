@@ -105,23 +105,6 @@ class Kasubbid extends MY_Controller
         $this->template($this->data, $this->module);
     }
 
-    public function validasi_tacit()
-    {
-        $this->load->model('Pengetahuan_tacit_m');
-        if ($this->POST('validate'))
-        {
-        	$data = Pengetahuan_tacit_m::find($this->POST('id'));
-        	$data->status = $data->status == 'Pending' ? 'Valid' : 'Pending';
-        	$data->save();
-        	echo json_encode(['status' => $data->status]);
-        	exit;
-        }
-        $this->data['pengetahuan_tacit'] = Pengetahuan_tacit_m::get();
-        $this->data['title'] = 'Validasi Tacit';
-        $this->data['content'] = 'validasi_tacit';
-        $this->template($this->data, $this->module);
-    }
-
     public function detail_pengetahuan_tacit()
     {
         $this->data['id_tacit'] = $this->uri->segment(3);
@@ -215,23 +198,6 @@ class Kasubbid extends MY_Controller
         $this->data['pengetahuan_eksplisit'] = Pengetahuan_eksplisit_m::get();
         $this->data['title'] = 'Pengetahuan Eksplisit';
         $this->data['content'] = 'pengetahuan_eksplisit';
-        $this->template($this->data, $this->module);
-    }
-
-    public function validasi_eksplisit()
-    {
-        $this->load->model('Pengetahuan_eksplisit_m');
-        if ($this->POST('validate'))
-        {
-        	$data = Pengetahuan_eksplisit_m::find($this->POST('id'));
-        	$data->status = $data->status == 'Pending' ? 'Valid' : 'Pending';
-        	$data->save();
-        	echo json_encode(['status' => $data->status]);
-        	exit;
-        }
-        $this->data['pengetahuan_eksplisit'] = Pengetahuan_eksplisit_m::get();
-        $this->data['title'] = 'Pengetahuan Eksplisit';
-        $this->data['content'] = 'validasi_eksplisit';
         $this->template($this->data, $this->module);
     }
 

@@ -275,7 +275,9 @@ class Pakar extends MY_Controller
             redirect('pakar/pengetahuan_tacit');
         }
 
-        $this->data['pengetahuan_tacit'] = Pengetahuan_tacit_m::where('id_pengguna', $this->data['id_pengguna'])->get();
+        $this->data['pengetahuan_tacit'] = Pengetahuan_tacit_m::with('like', 'komentar')
+                                            ->where('id_pengguna', $this->data['id_pengguna'])
+                                            ->get();
         $this->data['title'] = 'Pengetahuan Tacit';
         $this->data['content'] = 'pengetahuan_tacit';
         $this->template($this->data, $this->module);
@@ -468,10 +470,113 @@ class Pakar extends MY_Controller
         $this->template($this->data, $this->module);
     }
 
-    public function share_tacit()
+    public function validasi_tacit()
     {
         $this->load->model('Pengetahuan_tacit_m');
-        $this->data['pengetahuan_tacit'] = Pengetahuan_tacit_m::where('status', 'Valid')->get();
+        if ($this->POST('validate'))
+        {
+            $data = Pengetahuan_tacit_m::find($this->POST('id'));
+            $data->status = $data->status == 'Pending' ? 'Valid' : 'Pending';
+            $data->save();
+
+            $pengguna = Pengguna_m::find($data->id_pengguna);
+            switch ($data->status)
+            {
+                case 'Valid':
+                    $pengguna->poin += 25;
+                    $this->load->model('Notifikasi_m');
+                    $notifikasi = new Notifikasi_m();
+                    $notifikasi->id_pengguna    = $data->id_pengguna;
+                    $notifikasi->id_pengetahuan = $this->POST('id');
+                    $notifikasi->jenis          = 'Tacit';
+                    $notifikasi->deskripsi      = '';
+                    $notifikasi->save();
+                    break;
+
+                case 'Pending':
+                    $pengguna->poin -= 25;
+                    break;
+            }
+            $pengguna->save();
+
+            echo json_encode(['status' => $data->status]);
+            exit;
+        }
+        $this->data['pengetahuan_tacit'] = Pengetahuan_tacit_m::get();
+        $this->data['title'] = 'Validasi Tacit';
+        $this->data['content'] = 'validasi_tacit';
+        $this->template($this->data, $this->module);
+    }
+
+    public function validasi_eksplisit()
+    {
+        $this->load->model('Pengetahuan_eksplisit_m');
+        if ($this->POST('validate'))
+        {
+            $data = Pengetahuan_eksplisit_m::find($this->POST('id'));
+            $data->status = $data->status == 'Pending' ? 'Valid' : 'Pending';
+            $data->save();
+
+            $pengguna = Pengguna_m::find($data->id_pengguna);
+            switch ($data->status)
+            {
+                case 'Valid':
+                    $pengguna->poin += 25;
+                    $this->load->model('Notifikasi_m');
+                    $notifikasi = new Notifikasi_m();
+                    $notifikasi->id_pengguna    = $data->id_pengguna;
+                    $notifikasi->id_pengetahuan = $this->POST('id');
+                    $notifikasi->jenis          = 'Eksplisit';
+                    $notifikasi->deskripsi      = '';
+                    $notifikasi->save();
+                    break;
+
+                case 'Pending':
+                    $pengguna->poin -= 25;
+                    break;
+            }
+            $pengguna->save();
+
+            echo json_encode(['status' => $data->status]);
+            exit;
+        }
+        $this->data['pengetahuan_eksplisit'] = Pengetahuan_eksplisit_m::get();
+        $this->data['title'] = 'Pengetahuan Eksplisit';
+        $this->data['content'] = 'validasi_eksplisit';
+        $this->template($this->data, $this->module);
+    }
+
+    public function share_tacit()
+    {
+        if ($this->POST('like'))
+        {
+            $this->load->model('Like_tacit_m');
+            $like = Like_tacit_m::where('id_tacit', $this->POST('id_tacit'))
+                    ->where('id_pengguna', $this->data['id_pengguna'])
+                    ->first();
+
+            if (isset($like))
+            {
+                $like->delete();
+                $data = ['response' => 'unlike'];
+            }
+            else
+            {
+                $like = new Like_tacit_m();
+                $like->id_tacit     = $this->POST('id_tacit');
+                $like->id_pengguna  = $this->data['id_pengguna'];
+                $like->save();
+                $data = ['response' => 'like'];
+            }
+
+            echo json_encode($data);
+            exit;
+        }
+
+        $this->load->model('Pengetahuan_tacit_m');
+        $this->data['pengetahuan_tacit'] = Pengetahuan_tacit_m::with('like', 'komentar')
+                                            ->where('status', 'Valid')
+                                            ->get();
         $this->data['title'] = 'Pengetahuan Tacit';
         $this->data['content'] = 'share_tacit';
         $this->template($this->data, $this->module);
@@ -479,8 +584,35 @@ class Pakar extends MY_Controller
 
     public function share_eksplisit()
     {
+        if ($this->POST('like'))
+        {
+            $this->load->model('Like_eksplisit_m');
+            $like = Like_eksplisit_m::where('id_eksplisit', $this->POST('id_eksplisit'))
+                    ->where('id_pengguna', $this->data['id_pengguna'])
+                    ->first();
+                    
+            if (isset($like))
+            {
+                $like->delete();
+                $data = ['response' => 'unlike'];
+            }
+            else
+            {
+                $like = new Like_eksplisit_m();
+                $like->id_eksplisit = $this->POST('id_eksplisit');
+                $like->id_pengguna  = $this->data['id_pengguna'];
+                $like->save();
+                $data = ['response' => 'like'];
+            }
+
+            echo json_encode($data);
+            exit;
+        }
+
         $this->load->model('Pengetahuan_eksplisit_m');
-        $this->data['pengetahuan_eksplisit'] = Pengetahuan_eksplisit_m::where('status', 'Valid')->get();
+        $this->data['pengetahuan_eksplisit'] = Pengetahuan_eksplisit_m::with('like', 'komentar')
+                                            ->where('status', 'Valid')
+                                            ->get();
         $this->data['title'] = 'Pengetahuan Eksplisit';
         $this->data['content'] = 'share_eksplisit';
         $this->template($this->data, $this->module);

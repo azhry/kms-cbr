@@ -26,7 +26,7 @@
 					</div>
 				</div>
 				<div class="portlet-body">
-					<?= form_open('anggota-lumbung/detail-pengetahuan-tacit/' . $id_tacit) ?>
+					<?= form_open('unit/detail-pengetahuan-tacit/' . $id_tacit) ?>
 						<div class="form-group">
 							<textarea class="form-control" name="komentar" placeholder="Komentar anda.."></textarea>
 						</div>

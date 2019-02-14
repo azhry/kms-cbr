@@ -21,7 +21,7 @@ class Login extends MY_Controller
 					break;
 
 				case 3:
-					redirect('anggota-lumbung');
+					redirect('unit');
 					break;
 			}
 

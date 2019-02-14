@@ -76,24 +76,6 @@
                     </ul>
                 </li>
                 <li>
-                    <a href="javascript:;">
-                    <span class="title">Validasi Pengetahuan</span>
-                    <span class="arrow "></span>
-                    </a>
-                    <ul class="sub-menu">
-                        <li>
-                            <a href="<?= base_url('kasubbid/validasi-tacit') ?>">
-                                <span class="title">Tacit</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="<?= base_url('kasubbid/validasi-eksplisit') ?>">
-                                <span class="title">Eksplisit</span>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-                <li>
                     <a href="<?= base_url('kasubbid/kategori') ?>">
                         <span class="title">Data Kategori</span>
                     </a>

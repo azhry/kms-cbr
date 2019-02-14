@@ -54,8 +54,8 @@ License: You must have a valid license purchased only from themeforest(the above
     <!-- BEGIN LOGO -->
     <div class="logo">
         <a href="#">
-            <h3>Sistem Pendukung Keputusan</h3>
-            <h4>Case-based Reasoning</h4>
+            <h3>Knowledge Management System PTPN 7</h3>
+            <h4>Unit Usaha Sungai Lengi Bagian Pemeliharaan Tanaman</h4>
         </a>
     </div>
     <!-- END LOGO -->
