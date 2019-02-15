@@ -6,49 +6,33 @@
 			<div class="portlet box green">
 				<div class="portlet-title">
 					<div class="caption">
-						Tambah Masalah
+						Ubah Solusi
 					</div>
 				</div>
 				<div class="portlet-body">
-					<?= form_open('pakar/add-masalah') ?>
-					<div class="form-group">
-						<label for="judul">Judul Masalah</label>
-						<input type="text" name="judul" class="form-control">
-					</div>
-					<div class="form-group">
-						<label for="unit">Unit</label>
-						<select class="form-control" name="id_unit" required>
-							<option value="">Pilih Unit</option>
-							<?php foreach ($unit as $row): ?>
-								<option value="<?= $row->id_unit ?>"><?= $row->unit ?></option>
-							<?php endforeach; ?>
-						</select>
-					</div>
-					<div class="form-group">
-						<button type="button" onclick="tambah_gejala();" class="btn blue btn-xs">
-							<i class="fa fa-plus"></i> Tambah Gejala
-						</button>
-					</div>
-					<div id="list-gejala">
-						<div class="form-group">
-							<select class="form-control" name="id_gejala[]" required>
-								<option value="">Pilih Gejala</option>
-								<?php foreach ($gejala as $row): ?>
-									<option value="<?= $row->id_gejala ?>"><?= $row->gejala ?></option>
-								<?php endforeach; ?>
-							</select>
-						</div>
-					</div>
+					<?= form_open('pakar/ubah-solusi/' . $id_masalah) ?>
 					<div class="form-group">
 						<button type="button" onclick="tambah_solusi();" class="btn blue btn-xs">
 							<i class="fa fa-plus"></i> Tambah Solusi
 						</button>
 					</div>
 					<div id="list-solusi">
-						<div class="form-group">
-							<label for="solusi">Solusi</label>
-							<input type="text" name="solusi[]" class="form-control">
-						</div>
+						<?php  
+							foreach ($masalah->solusi as $solusi)
+							{
+								echo '<div class="form-group">';
+								echo '<label for="solusi">Solusi</label>';
+								echo '<div class="row">';
+								echo '<div class="col-md-8">';
+								echo '<input type="text" name="solusi[]" value="' . $solusi->solusi . '" class="form-control">';
+								echo '</div>';
+								echo '<div class="col-md-4">';
+								echo '<button type="button" onclick="$(this).parent().parent().parent().remove();" class="btn red btn-xs"><i class="fa fa-trash"></i></button>';
+								echo '</div>';
+								echo '</div>';
+								echo '</div>';
+							}
+						?>
 					</div>
 					<div class="form-group">
 						<input type="submit" name="submit" class="btn green">

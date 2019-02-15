@@ -52,7 +52,12 @@
                         </li>
                         <li>
                             <a href="<?= base_url('kasubbid/reward') ?>">
-                                <span class="title">Reward</span>
+                                <span class="title">Data Reward</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="<?= base_url('kasubbid/my-reward') ?>">
+                                <span class="title">My Reward</span>
                             </a>
                         </li>
                     </ul>
@@ -81,8 +86,8 @@
                     </a>
                 </li>
                 <li>
-                    <a href="<?= base_url('kasubbid/bagian') ?>">
-                        <span class="title">Data Bagian</span>
+                    <a href="<?= base_url('kasubbid/unit') ?>">
+                        <span class="title">Data Unit</span>
                     </a>
                 </li>
             </ul>

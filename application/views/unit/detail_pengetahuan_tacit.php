@@ -1,3 +1,4 @@
+<link rel="stylesheet" type="text/css" href="<?= base_url('assets/metronic') ?>/assets/global/plugins/jquery-tags-input/jquery.tagsinput.css"/>
 <div class="page-content">
 	<!-- BEGIN PAGE CONTENT INNER -->
 	<?= $this->session->flashdata('msg') ?>
@@ -17,6 +18,30 @@
 				</div>
 				<div class="portlet-body">					
 					<?= $pengetahuan_tacit->isi ?>
+				</div>
+			</div>
+			<div class="portlet box green">
+				<div class="portlet-title">
+					<div class="caption">
+						Tag Pengguna
+					</div>
+				</div>
+				<?php  
+					$x = $pengetahuan_tacit->tag->toArray();
+					$y = array_column($x, 'pengguna');
+					var_dump(array_column($y, 'nama'));
+				?>
+				<div class="portlet-body" style="min-height: 100px;">					
+					<?= form_open('unit/detail-pengetahuan-tacit/' . $id_tacit) ?>
+					<div class="form-group">
+						<div class="col-md-9">
+							<input id="tags_1" type="text" name="tags" class="form-control tags" value=""/>
+						</div>
+					</div>
+					<div class="form-group">
+						<input type="submit" class="btn blue" name="submit_tag" value="Tag Pengguna">
+					</div>
+					<?= form_close() ?>
 				</div>
 			</div>
 			<div class="portlet box green">
@@ -57,3 +82,16 @@
 	</div>
 	<!-- END PAGE CONTENT INNER -->
 </div>
+
+<script src="<?= base_url('assets/metronic') ?>/assets/global/plugins/jquery-tags-input/jquery.tagsinput.min.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+	$(document).ready(function() {
+		$('#tags_1').tagsInput({
+            width: 'auto',
+            'onAddTag': function () {
+                //alert(1);
+            },
+        });
+	});
+</script>

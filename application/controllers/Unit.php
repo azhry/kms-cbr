@@ -58,6 +58,10 @@ class Unit extends MY_Controller
 			redirect('unit/profile');
 		}
 
+        $this->load->model('Pengetahuan_tacit_m');
+        $this->load->model('Pengetahuan_eksplisit_m');
+        $this->data['pengetahuan_tacit'] = Pengetahuan_tacit_m::where('id_pengguna', $this->data['id_pengguna'])->get();
+        $this->data['pengetahuan_eksplisit'] = Pengetahuan_eksplisit_m::where('id_pengguna', $this->data['id_pengguna'])->get();
 		$this->data['title']	= 'Profile';
 		$this->data['content']	= 'profile';
 		$this->template($this->data, $this->module);
@@ -66,7 +70,8 @@ class Unit extends MY_Controller
 	public function problem_solving()
 	{
 		$this->load->model('Gejala_m');
-		$this->data['gejala'] 	= Gejala_m::get();
+		$this->data['gejala'] 	= Gejala_m::where('status', 'Verified')
+                                    ->get();
 
 		if ($this->POST('submit'))
 		{
@@ -77,6 +82,16 @@ class Unit extends MY_Controller
 			$cbr->fit2($this->data['masalah']);
 			$this->data['solusi'] = $cbr->rank($this->POST('gejala'));
 		}
+
+        if ($this->POST('request'))
+        {
+            $gejala = new Gejala_m();
+            $gejala->gejala = $this->POST('gejala');
+            $gejala->save();
+
+            $this->flashmsg('Data gejala berhasil diminta. Gejala akan dikonfirmasi oleh pakar terlebih dahulu.');
+            redirect('unit/problem-solving');
+        }
 
 		$this->data['title']	= 'Problem Solving';
 		$this->data['content']	= 'problem_solving';
@@ -228,16 +243,16 @@ class Unit extends MY_Controller
         $this->check_allowance(!isset($this->data['id_tacit']));
 
         $this->load->model('Pengetahuan_tacit_m');
-        $this->data['pengetahuan_tacit'] = Pengetahuan_tacit_m::with('komentar', 'pengguna')
+        $this->data['pengetahuan_tacit'] = Pengetahuan_tacit_m::with('komentar', 'pengguna', 'tag', 'tag.pengguna')
         									->find($this->data['id_tacit']);
         $this->check_allowance(!isset($this->data['pengetahuan_tacit']), ['Data not found', 'danger']);
 
         if ($this->POST('submit'))
         {
         	$komentar = new Komentar_tacit_m();
-        	$komentar->id_tacit = $this->data['id_tacit'];
+        	$komentar->id_tacit    = $this->data['id_tacit'];
         	$komentar->id_pengguna = $this->data['id_pengguna'];
-        	$komentar->komentar = $this->POST('komentar');
+        	$komentar->komentar    = $this->POST('komentar');
         	$komentar->save();
 
         	$this->flashmsg('Comment successfully added');
@@ -457,6 +472,17 @@ class Unit extends MY_Controller
         $this->data['reward'] = Reward_m::get();
         $this->data['title'] = 'Reward';
         $this->data['content'] = 'reward';
+        $this->template($this->data, $this->module);
+    }
+
+    public function my_reward()
+    {
+        $this->load->model('Penerima_reward_m');
+        $this->data['reward'] = Penerima_reward_m::with('reward')
+                                ->where('id_pengguna', $this->data['id_pengguna'])
+                                ->get();
+        $this->data['title'] = 'My Reward';
+        $this->data['content'] = 'my_reward';
         $this->template($this->data, $this->module);
     }
 }

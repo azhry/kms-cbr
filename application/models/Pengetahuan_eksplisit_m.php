@@ -33,4 +33,10 @@ class Pengetahuan_eksplisit_m extends Eloquent
         return $this->hasMany('Like_eksplisit_m', 'id_eksplisit', 'id_eksplisit');
     }
 
+    public function tag()
+    {
+        require_once __DIR__ . '/Tag_eksplisit_m.php';
+        return $this->hasMany('Tag_eksplisit_m', 'id_eksplisit', 'id_eksplisit');
+    }
+
 }

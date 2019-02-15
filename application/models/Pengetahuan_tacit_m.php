@@ -32,4 +32,10 @@ class Pengetahuan_tacit_m extends Eloquent
         require_once __DIR__ . '/Like_tacit_m.php';
         return $this->hasMany('Like_tacit_m', 'id_tacit', 'id_tacit');
     }
+
+    public function tag()
+    {
+        require_once __DIR__ . '/Tag_tacit_m.php';
+        return $this->hasMany('Tag_tacit_m', 'id_tacit', 'id_tacit');
+    }
 }

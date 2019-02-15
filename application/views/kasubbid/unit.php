@@ -10,7 +10,7 @@
 					</div>
 				</div>
 				<div class="portlet-body">
-					<a class="btn green" href="<?= base_url('kasubbid/add-bagian') ?>">
+					<a class="btn green" href="<?= base_url('kasubbid/add-unit') ?>">
 						<i class="fa fa-plus"></i> Tambah Data
 					</a>
 					<br><br>
@@ -18,23 +18,25 @@
 						<thead>
 							<tr>
 								<th>No.</th>
-								<th>Bagian</th>
-								<th>Deskripsi</th>
+								<th>Kode Bagian</th>
+								<th>Unit</th>
+								<th>Desa</th>
 								<th>Aksi</th>
 							</tr>
 						</thead>
 						<tbody>
-							<?php foreach ($bagian as $i => $row): ?>
+							<?php foreach ($unit as $i => $row): ?>
 								<tr>
 									<td><?= $i + 1 ?></td>
-									<td><?= $row->bagian ?></td>
-									<td><?= $row->deskripsi ?></td>
+									<td><?= $row->kode_bagian ?></td>
+									<td><?= $row->unit ?></td>
+									<td><?= $row->desa ?></td>
 									<td>
 										<div class="btn-group">
-											<a href="<?= base_url('kasubbid/edit-bagian/' . $row->id_bagian) ?>" class="btn green">
+											<a href="<?= base_url('kasubbid/edit-unit/' . $row->id_unit) ?>" class="btn green">
 												<i class="fa fa-edit"></i>
 											</a>
-											<a href="<?= base_url('kasubbid/bagian/' . $row->id_bagian) ?>" class="btn red">
+											<a href="<?= base_url('kasubbid/unit/' . $row->id_unit) ?>" class="btn red">
 												<i class="fa fa-trash"></i>
 											</a>
 										</div>

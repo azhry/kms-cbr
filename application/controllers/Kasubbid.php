@@ -292,62 +292,64 @@ class Kasubbid extends MY_Controller
         $this->template($this->data, $this->module);
     }
 
-    public function bagian()
+    public function unit()
     {
-        $this->data['id_bagian'] = $this->uri->segment(3);
-        $this->load->model('Bagian_m');
-        if (isset($this->data['id_bagian']))
+        $this->data['id_unit'] = $this->uri->segment(3);
+        $this->load->model('Unit_m');
+        if (isset($this->data['id_unit']))
         {
-            $data = Bagian_m::find($this->data['id_bagian']);
+            $data = Unit_m::find($this->data['id_unit']);
             $data->delete();
             $this->flashmsg('Data successfully deleted');
-            redirect('kasubbid/bagian');
+            redirect('kasubbid/unit');
         }
 
-        $this->data['bagian'] = Bagian_m::get();
-        $this->data['title'] = 'Bagian';
-        $this->data['content'] = 'bagian';
+        $this->data['unit'] = Unit_m::get();
+        $this->data['title'] = 'Unit';
+        $this->data['content'] = 'unit';
         $this->template($this->data, $this->module);
     }
 
-    public function add_bagian()
+    public function add_unit()
     {
-        $this->load->model('Bagian_m');
+        $this->load->model('Unit_m');
         if ($this->POST('submit'))
         {
-            $bagian = new Bagian_m();
-            $bagian->bagian = $this->POST('bagian');
-            $bagian->deskripsi = $this->POST('deskripsi');
-            $bagian->save();
+            $unit = new Unit_m();
+            $unit->unit = $this->POST('unit');
+            $unit->kode_bagian = $this->POST('kode_bagian');
+            $unit->desa = $this->POST('desa');
+            $unit->save();
             $this->flashmsg('Data successfully added');
-            redirect('kasubbid/add_bagian');
+            redirect('kasubbid/add-unit');
         }
 
-        $this->data['title'] = 'Add Bagian';
-        $this->data['content'] = 'add_bagian';
+        $this->data['title'] = 'Add Unit';
+        $this->data['content'] = 'add_unit';
         $this->template($this->data, $this->module);
     }
 
-    public function edit_bagian()
+    public function edit_unit()
     {
-        $this->data['id_bagian'] = $this->uri->segment(3);
-        $this->check_allowance(!isset($this->data['id_bagian']));
+        $this->data['id_unit'] = $this->uri->segment(3);
+        $this->check_allowance(!isset($this->data['id_unit']));
 
-        $this->load->model('Bagian_m');
-        $this->data['bagian'] = Bagian_m::find($this->data['id_bagian']);
-        $this->check_allowance(!isset($this->data['bagian']), ['Data not found', 'danger']);
+        $this->load->model('Unit_m');
+        $this->data['unit'] = Unit_m::find($this->data['id_unit']);
+        $this->check_allowance(!isset($this->data['unit']), ['Data not found', 'danger']);
 
         if ($this->POST('submit'))
         {
-            $this->data['bagian']->bagian = $this->POST('bagian');
-            $this->data['bagian']->deskripsi = $this->POST('deskripsi');
-            $this->data['bagian']->save();
+            $this->data['unit']->unit = $this->POST('unit');
+            $this->data['unit']->kode_bagian = $this->POST('kode_bagian');
+            $this->data['unit']->desa = $this->POST('desa');
+            $this->data['unit']->save();
             $this->flashmsg('Data successfully edited');
-            redirect('kasubbid/edit_bagian/' . $this->data['id_bagian']);
+            redirect('kasubbid/edit-unit/' . $this->data['id_unit']);
         }
 
-        $this->data['title'] = 'Edit Bagian';
-        $this->data['content'] = 'edit_bagian';
+        $this->data['title'] = 'Edit Unit';
+        $this->data['content'] = 'edit_unit';
         $this->template($this->data, $this->module);
     }
 
@@ -481,6 +483,17 @@ class Kasubbid extends MY_Controller
 
         $this->data['title'] = 'Edit Reward';
         $this->data['content'] = 'edit_reward';
+        $this->template($this->data, $this->module);
+    }
+
+    public function my_reward()
+    {
+        $this->load->model('Penerima_reward_m');
+        $this->data['reward'] = Penerima_reward_m::with('reward')
+                                ->where('id_pengguna', $this->data['id_pengguna'])
+                                ->get();
+        $this->data['title'] = 'My Reward';
+        $this->data['content'] = 'my_reward';
         $this->template($this->data, $this->module);
     }
 

@@ -6,18 +6,22 @@
 			<div class="portlet box green">
 				<div class="portlet-title">
 					<div class="caption">
-						Tambah Bagian
+						Edit Unit
 					</div>
 				</div>
 				<div class="portlet-body">
-					<?= form_open('kasubbid/add-bagian') ?>
+					<?= form_open('kasubbid/edit-unit/' . $id_unit) ?>
 					<div class="form-group">
-						<label for="bagian">Bagian</label>
-						<input type="text" name="bagian" class="form-control">
+						<label for="kode_bagian">Kode Bagian</label>
+						<input type="text" name="kode_bagian" value="<?= $unit->kode_bagian ?>" class="form-control">
 					</div>
 					<div class="form-group">
-						<label for="deskripsi">Deskripsi</label>
-						<textarea name="deskripsi" class="form-control"></textarea>
+						<label for="unit">Nama Unit</label>
+						<input type="text" name="unit" value="<?= $unit->unit ?>" class="form-control">
+					</div>
+					<div class="form-group">
+						<label for="desa">Desa</label>
+						<input type="text" name="desa" value="<?= $unit->desa ?>" class="form-control">
 					</div>
 					<div class="form-group">
 						<input type="submit" name="submit" class="btn green">

@@ -20,6 +20,15 @@
 						<input type="number" name="representasi" value="<?= $gejala->representasi ?>" class="form-control">
 					</div>
 					<div class="form-group">
+						<label for="status">Status</label>
+						<?php  
+							echo form_dropdown('status', [
+								'Pending' 	=> 'Pending',
+								'Verified'	=> 'Verified'
+							], $gejala->status, ['class' => 'form-control']);
+						?>
+					</div>
+					<div class="form-group">
 						<input type="submit" name="submit" class="btn green">
 					</div>
 					<?= form_close() ?>			

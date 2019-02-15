@@ -1,18 +1,18 @@
 KMS CBR
 1. Validasi pengetahuan oleh pakar (o)
 2. Judul jadi Knowledge Management System PTPN 7 Unit Usaha Sungai Lengi Bagian Pemeliharaan Tanaman (o)
-3. Ketika divalidasi, muncul notifikasi (o)
-4. Anggota lumbung jadi unit
+3. Ketika divalidasi, muncul notifikasi (o) -----> view notifikasi belum
+4. Anggota lumbung jadi unit (o)
 	- unit 1 s.d. 6
 	- kode bagian unit
 	- nama unit
 	- desa
-5. Bagian jadi unit
+5. Bagian jadi unit (o)
 6. Halaman utama ada logo mirip di proposal
-7. Fitur like (o)
+7. Fitur like (o) ----> pakar dan unit belum
 8. Tag user pada pengetahuan, muncul di notifikasi
-9. Halaman penerima reward & my reward
-10. Pengetahuan saya di halaman profil
-11. Request gejala di problem solving
-12. Data revise di pakar (ngubah solusi)
+9. Halaman penerima reward & my reward (o)
+10. Pengetahuan saya di halaman profil (o)
+11. Request gejala di problem solving (o)
+12. Data revise di pakar (ngubah solusi) (o)
 13. Search pengetahuan
