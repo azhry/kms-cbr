@@ -7,6 +7,7 @@ class Tag_tacit_m extends Eloquent
 {
     protected $table        = 'tag_tacit';
     protected $primaryKey   = 'id_tag';
+    protected $fillable     = ['id_tacit', 'id_pengguna'];
 
     public function tacit()
     {

@@ -16,6 +16,16 @@ class Kasubbid extends MY_Controller
         $this->data['nip']          = $this->session->userdata('nip');
         $this->load->model('Pengguna_m');
 		$this->data['data_pengguna']	= Pengguna_m::find($this->data['id_pengguna']);
+
+        $this->load->model('Notifikasi_m');
+        $this->data['notifikasi']   = Notifikasi_m::orderBy('created_at', 'DESC')
+                                        ->where('id_pengguna', $this->data['id_pengguna'])
+                                        ->get();
+        $this->data['u_notifikasi'] = Notifikasi_m::where('dilihat', 0)
+                                        ->where('id_pengguna', $this->data['id_pengguna'])
+                                        ->get();
+        Notifikasi_m::where('id_pengguna', $this->data['id_pengguna'])->update(['dilihat' => 1]);
+        $this->load->helper('timeago');
 	}
 
 	public function index()
@@ -497,100 +507,6 @@ class Kasubbid extends MY_Controller
         $this->template($this->data, $this->module);
     }
 
-	public function pengguna()
-    {
-        $this->data['id_pengguna'] = $this->uri->segment(3);
-        $this->load->model('Pengguna_m');
-        if (isset($this->data['id_pengguna']))
-        {
-            $data = Pengguna_m::find($this->data['id_pengguna']);
-            $data->delete();
-            $this->flashmsg('Data successfully deleted');
-            redirect('kasubbid/pengguna');
-        }
-
-        $this->data['pengguna'] = Pengguna_m::get();
-        $this->data['title'] = 'Pengguna';
-        $this->data['content'] = 'pengguna';
-        $this->template($this->data, $this->module);
-    }
-
-    public function detail_pengguna()
-    {
-        $this->data['id_pengguna'] = $this->uri->segment(3);
-        $this->check_allowance(!isset($this->data['id_pengguna']));
-
-        $this->load->model('Pengguna_m');
-        $this->data['pengguna'] = Pengguna_m::with(['tacit', 'eksplisit', 'tacit_tervalidasi', 'eksplisit_tervalidasi'])
-        							->find($this->data['id_pengguna']);
-        $this->check_allowance(!isset($this->data['pengguna']), ['Data not found', 'danger']);
-        $this->data['title'] = 'Detail Pengguna';
-        $this->data['content'] = 'detail_pengguna';
-        $this->template($this->data, $this->module);
-    }
-
-    public function add_pengguna()
-    {
-        $this->load->model('Pengguna_m');
-        if ($this->POST('submit'))
-        {
-        	$password = $this->POST('password');
-        	$rpassword = $this->POST('rpassword');
-        	if ($password != $rpassword)
-        	{
-        		$this->flashmsg('Password harus sama dengan konfirmasi password', 'warning');
-        		redirect('kasubbid/add-pengguna');
-        	}
-
-            $pengguna = new Pengguna_m();
-            $pengguna->nip = $this->POST('nip');
-            $pengguna->id_role = $this->POST('id_role');
-            $pengguna->nama = $this->POST('nama');
-            $pengguna->jenis_kelamin = $this->POST('jenis_kelamin');
-            $pengguna->tempat_lahir = $this->POST('tempat_lahir');
-            $pengguna->tanggal_lahir = $this->POST('tanggal_lahir');
-            $pengguna->password = md5($password);
-            $pengguna->save();
-            $this->flashmsg('Data successfully added');
-            redirect('kasubbid/add_pengguna');
-        }
-
-        $this->load->model('Role_m');
-        $this->data['role'] = Role_m::get();
-        $this->data['title'] = 'Add Pengguna';
-        $this->data['content'] = 'add_pengguna';
-        $this->template($this->data, $this->module);
-    }
-
-    public function edit_pengguna()
-    {
-        $this->data['id_pengguna'] = $this->uri->segment(3);
-        $this->check_allowance(!isset($this->data['id_pengguna']));
-
-        $this->load->model('Pengguna_m');
-        $this->data['pengguna'] = Pengguna_m::find($this->data['id_pengguna']);
-        $this->check_allowance(!isset($this->data['pengguna']), ['Data not found', 'danger']);
-
-        if ($this->POST('submit'))
-        {
-            $this->data['pengguna']->nip = $this->POST('nip');
-            $this->data['pengguna']->id_role = $this->POST('id_role');
-            $this->data['pengguna']->nama = $this->POST('nama');
-            $this->data['pengguna']->jenis_kelamin = $this->POST('jenis_kelamin');
-            $this->data['pengguna']->tempat_lahir = $this->POST('tempat_lahir');
-            $this->data['pengguna']->tanggal_lahir = $this->POST('tanggal_lahir');
-            $this->data['pengguna']->save();
-            $this->flashmsg('Data successfully edited');
-            redirect('kasubbid/edit_pengguna/' . $this->data['id_pengguna']);
-        }
-
-        $this->load->model('Role_m');
-        $this->data['role'] = Role_m::get();
-        $this->data['title'] = 'Edit Pengguna';
-        $this->data['content'] = 'edit_pengguna';
-        $this->template($this->data, $this->module);
-    }
-
 	public function masalah()
     {
         $this->data['id_masalah'] = $this->uri->segment(3);
@@ -766,6 +682,105 @@ class Kasubbid extends MY_Controller
 
         $this->data['title'] = 'Edit Kategori';
         $this->data['content'] = 'edit_kategori';
+        $this->template($this->data, $this->module);
+    }
+
+    public function cari_pengetahuan()
+    {
+        $this->data['search']   = $this->POST('search');
+        if (!isset($this->data['search']) or empty($this->data['search']))
+        {
+            $this->flashmsg('Anda harus memasukkan kata kunci pencarian', 'warning');
+            redirect('pakar');
+        }
+
+        $this->data['query']    = $this->POST('query');
+        $this->load->model('Pengetahuan_tacit_m');
+        $this->load->model('Pengetahuan_eksplisit_m');
+
+        $this->data['pengetahuan_tacit']        = Pengetahuan_tacit_m::
+                                                    where('judul', 'like', '%' . $this->data['query'] . '%')
+                                                    ->orWhere('isi', 'like', '%' . $this->data['query'] . '%')
+                                                    ->get();
+        $this->data['pengetahuan_eksplisit']    = Pengetahuan_eksplisit_m::
+                                                    where('judul', 'like', '%' . $this->data['query'] . '%')
+                                                    ->orWhere('keterangan', 'like', '%' . $this->data['query'] . '%')
+                                                    ->orWhere('referensi', 'like', '%' . $this->data['query'] . '%')
+                                                    ->get();
+        $this->data['title']    = 'Cari Pengetahuan';
+        $this->data['content']  = 'cari_pengetahuan';
+        $this->template($this->data, $this->module);
+    }
+
+    public function share_tacit()
+    {
+        if ($this->POST('like'))
+        {
+            $this->load->model('Like_tacit_m');
+            $like = Like_tacit_m::where('id_tacit', $this->POST('id_tacit'))
+                    ->where('id_pengguna', $this->data['id_pengguna'])
+                    ->first();
+
+            if (isset($like))
+            {
+                $like->delete();
+                $data = ['response' => 'unlike'];
+            }
+            else
+            {
+                $like = new Like_tacit_m();
+                $like->id_tacit     = $this->POST('id_tacit');
+                $like->id_pengguna  = $this->data['id_pengguna'];
+                $like->save();
+                $data = ['response' => 'like'];
+            }
+
+            echo json_encode($data);
+            exit;
+        }
+
+        $this->load->model('Pengetahuan_tacit_m');
+        $this->data['pengetahuan_tacit'] = Pengetahuan_tacit_m::with('like', 'komentar')
+                                            ->where('status', 'Valid')
+                                            ->get();
+        $this->data['title'] = 'Pengetahuan Tacit';
+        $this->data['content'] = 'share_tacit';
+        $this->template($this->data, $this->module);
+    }
+
+    public function share_eksplisit()
+    {
+        if ($this->POST('like'))
+        {
+            $this->load->model('Like_eksplisit_m');
+            $like = Like_eksplisit_m::where('id_eksplisit', $this->POST('id_eksplisit'))
+                    ->where('id_pengguna', $this->data['id_pengguna'])
+                    ->first();
+                    
+            if (isset($like))
+            {
+                $like->delete();
+                $data = ['response' => 'unlike'];
+            }
+            else
+            {
+                $like = new Like_eksplisit_m();
+                $like->id_eksplisit = $this->POST('id_eksplisit');
+                $like->id_pengguna  = $this->data['id_pengguna'];
+                $like->save();
+                $data = ['response' => 'like'];
+            }
+
+            echo json_encode($data);
+            exit;
+        }
+
+        $this->load->model('Pengetahuan_eksplisit_m');
+        $this->data['pengetahuan_eksplisit'] = Pengetahuan_eksplisit_m::with('like', 'komentar')
+                                            ->where('status', 'Valid')
+                                            ->get();
+        $this->data['title'] = 'Pengetahuan Eksplisit';
+        $this->data['content'] = 'share_eksplisit';
         $this->template($this->data, $this->module);
     }
 }

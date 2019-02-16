@@ -7,6 +7,7 @@ class Tag_eksplisit_m extends Eloquent
 {
     protected $table        = 'tag_eksplisit';
     protected $primaryKey   = 'id_tag';
+    protected $fillable     = ['id_eksplisit', 'id_pengguna'];
 
     public function eksplisit()
     {

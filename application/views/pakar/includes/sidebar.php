@@ -103,6 +103,11 @@
                         <span class="title">Reward</span>
                     </a>
                 </li>
+                <li>
+                    <a href="<?= base_url('pakar/pengguna') ?>">
+                        <span class="title">Pengguna</span>
+                    </a>
+                </li>
             </ul>
             <!-- END SIDEBAR MENU -->
         </div>

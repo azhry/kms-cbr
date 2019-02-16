@@ -21,6 +21,58 @@
             <!-- BEGIN TOP NAVIGATION MENU -->
             <div class="top-menu">
                 <ul class="nav navbar-nav pull-right">
+                    <!-- BEGIN NOTIFICATION DROPDOWN -->
+                    <!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->
+                    <li class="dropdown dropdown-extended dropdown-notification dropdown-dark" id="header_notification_bar">
+                        <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+                        <i class="icon-bell"></i>
+                        <?php if (count($u_notifikasi) > 0): ?>
+                            <span class="badge badge-danger">
+                            <?= count($u_notifikasi) ?> </span>
+                        <?php endif; ?>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <ul class="dropdown-menu-list scroller" style="height: 250px;" data-handle-color="#637283">
+                                    <?php foreach ($notifikasi as $row): ?>
+                                        <?php  
+                                            if ($row->jenis == 'Tacit' or $row->jenis == 'Tag Tacit')
+                                            {
+                                                $notifikasi = 'Pengetahuan tacit anda telah divalidasi';
+                                                $link = base_url('kasubbid/detail-pengetahuan-tacit/' . $row->id_pengetahuan);
+                                                if ($row->jenis == 'Tag Tacit')
+                                                {
+                                                    $notifikasi = 'Anda ditandai pada pengetahuan tacit';
+                                                }
+                                            }
+                                            else
+                                            {
+                                                $notifikasi = 'Pengetahuan eksplisit anda telah divalidasi';
+                                                $link = base_url('kasubbid/detail-pengetahuan-eksplisit/' . $row->id_pengetahuan);
+                                                if ($row->jenis == 'Tag Eksplisit')
+                                                {
+                                                    $notifikasi = 'Anda ditandai pada pengetahuan eksplisit';
+                                                }
+                                            }
+                                        ?>
+                                        <li>
+                                            <a href="<?= $link ?>">
+                                            <span class="time" style="font-size: 9px;"><?= time_elapsed_string($row->created_at) ?></span>
+                                            <span class="details">
+                                            <span class="label label-sm label-icon label-danger">
+                                            <i class="icon-bell"></i>
+                                            </span>
+                                            <?= $notifikasi ?></span>
+                                            </a>
+                                        </li>
+                                    <?php endforeach; ?>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <!-- END NOTIFICATION DROPDOWN -->
+                    <li class="separator hide">
+                    </li>
                     <!-- BEGIN USER LOGIN DROPDOWN -->
                     <!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->
                     <li class="dropdown dropdown-user dropdown-dark">

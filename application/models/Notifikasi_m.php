@@ -7,6 +7,7 @@ class Notifikasi_m extends Eloquent
 {
     protected $table        = 'notifikasi';
     protected $primaryKey   = 'id_notifikasi';
+    protected $fillable		= ['id_pengguna', 'id_pengetahuan', 'jenis', 'deskripsi'];
 
     public function pengguna()
     {

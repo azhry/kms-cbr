@@ -46,11 +46,6 @@
                     </a>
                     <ul class="sub-menu">
                         <li>
-                            <a href="<?= base_url('kasubbid/pengguna') ?>">
-                                <span class="title">Pengguna</span>
-                            </a>
-                        </li>
-                        <li>
                             <a href="<?= base_url('kasubbid/reward') ?>">
                                 <span class="title">Data Reward</span>
                             </a>

@@ -27,15 +27,15 @@
 					</div>
 				</div>
 				<?php  
-					$x = $pengetahuan_tacit->tag->toArray();
-					$y = array_column($x, 'pengguna');
-					var_dump(array_column($y, 'nama'));
+					$tag_pengguna = $pengetahuan_tacit->tag->toArray();
+					$tag_pengguna = array_column($tag_pengguna, 'pengguna');
+					$nama_pengguna = array_column($tag_pengguna, 'nama');
 				?>
 				<div class="portlet-body" style="min-height: 100px;">					
 					<?= form_open('unit/detail-pengetahuan-tacit/' . $id_tacit) ?>
 					<div class="form-group">
 						<div class="col-md-9">
-							<input id="tags_1" type="text" name="tags" class="form-control tags" value=""/>
+							<input id="tags_1" type="text" name="tags" class="form-control tags" value="<?= implode(',', $nama_pengguna) ?>"/>
 						</div>
 					</div>
 					<div class="form-group">
@@ -86,12 +86,32 @@
 <script src="<?= base_url('assets/metronic') ?>/assets/global/plugins/jquery-tags-input/jquery.tagsinput.min.js" type="text/javascript"></script>
 
 <script type="text/javascript">
+	function inArray(needle, haystack) {
+		for (let i = 0; i < haystack.length; i++) {
+			if ((new RegExp(needle.toLowerCase())).test(haystack[i].toLowerCase())) {
+				return haystack[i];
+			}
+		}
+		return false;
+	}
+
 	$(document).ready(function() {
 		$('#tags_1').tagsInput({
             width: 'auto',
-            'onAddTag': function () {
-                //alert(1);
-            },
+            onAddTag: function(tag) {
+            	let data = '<?= implode(',', array_column($pengguna->toArray(), 'nama')) ?>';
+				data = data.split(',');
+            	if (!inArray(tag, data)) {
+            		$('#tags_1').removeTag(tag);
+            	} else {
+            		$('#tags_1').removeTag(tag);
+            		tag = inArray(tag, data);
+            		data = $('#tags_1').val();
+            		data = data.split(',');
+            		data.push(tag);
+            		$('#tags_1').importTags(data.join(','));
+            	}
+            }
         });
 	});
 </script>

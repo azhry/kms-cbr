@@ -16,6 +16,16 @@ class Unit extends MY_Controller
         $this->data['nip']          = $this->session->userdata('nip');
         $this->load->model('Pengguna_m');
 		$this->data['data_pengguna']	= Pengguna_m::find($this->data['id_pengguna']);
+
+        $this->load->model('Notifikasi_m');
+        $this->data['notifikasi']   = Notifikasi_m::orderBy('created_at', 'DESC')
+                                        ->where('id_pengguna', $this->data['id_pengguna'])
+                                        ->get();
+        $this->data['u_notifikasi'] = Notifikasi_m::where('dilihat', 0)
+                                        ->where('id_pengguna', $this->data['id_pengguna'])
+                                        ->get();
+        Notifikasi_m::where('id_pengguna', $this->data['id_pengguna'])->update(['dilihat' => 1]);
+        $this->load->helper('timeago');
 	}
 
 	public function index()
@@ -260,9 +270,41 @@ class Unit extends MY_Controller
 
         }
 
+        if ($this->POST('submit_tag'))
+        {
+            $this->load->model('Notifikasi_m');
+            Tag_tacit_m::where('id_tacit', $this->data['id_tacit'])->delete();
+            $tags = explode(',', $this->POST('tags'));
+            $tagData = [];
+            $notifikasi = [];
+            foreach ($tags as $tag)
+            {
+                $pengguna = Pengguna_m::where('nama', $tag)->first();
+                if (isset($pengguna))
+                {
+                    $tagData []= [
+                        'id_tacit'      => $this->data['id_tacit'],
+                        'id_pengguna'   => $pengguna->id_pengguna
+                    ];
+
+                    $notifikasi []= [
+                        'id_pengguna'       => $pengguna->id_pengguna,
+                        'id_pengetahuan'    => $this->data['id_tacit'],
+                        'jenis'             => 'Tag Tacit',
+                        'deskripsi'         => ''
+                    ];
+                }
+            }
+            Tag_tacit_m::insert($tagData);
+            Notifikasi_m::insert($notifikasi);
+            $this->flashmsg('Data tag berhasil ditambah');
+            redirect('unit/detail_pengetahuan_tacit/' . $this->data['id_tacit']);
+        }
+
         $this->load->helper('timeago');
-        $this->data['title'] = 'Detail Pengetahuan Tacit';
-        $this->data['content'] = 'detail_pengetahuan_tacit';
+        $this->data['pengguna'] = Pengguna_m::get();
+        $this->data['title']    = 'Detail Pengetahuan Tacit';
+        $this->data['content']  = 'detail_pengetahuan_tacit';
         $this->template($this->data, $this->module);
     }
 
@@ -339,7 +381,7 @@ class Unit extends MY_Controller
         $this->check_allowance(!isset($this->data['id_eksplisit']));
 
         $this->load->model('Pengetahuan_eksplisit_m');
-        $this->data['pengetahuan_eksplisit'] = Pengetahuan_eksplisit_m::with('komentar', 'pengguna')
+        $this->data['pengetahuan_eksplisit'] = Pengetahuan_eksplisit_m::with('komentar', 'pengguna', 'tag', 'tag.pengguna')
         										->find($this->data['id_eksplisit']);
         $this->check_allowance(!isset($this->data['pengetahuan_eksplisit']), ['Data not found', 'danger']);
 
@@ -352,11 +394,42 @@ class Unit extends MY_Controller
         	$komentar->save();
 
         	$this->flashmsg('Comment successfully added');
-            redirect('unit/detail_pengetahuan_eksplisit/' . $this->data['id_eksplisit']);
+            redirect('unit/detail-pengetahuan-eksplisit/' . $this->data['id_eksplisit']);
+        }
 
+        if ($this->POST('submit_tag'))
+        {
+            $this->load->model('Notifikasi_m');
+            Tag_eksplisit_m::where('id_eksplisit', $this->data['id_eksplisit'])->delete();
+            $tags = explode(',', $this->POST('tags'));
+            $tagData = [];
+            $notifikasi = [];
+            foreach ($tags as $tag)
+            {
+                $pengguna = Pengguna_m::where('nama', $tag)->first();
+                if (isset($pengguna))
+                {
+                    $tagData []= [
+                        'id_eksplisit'      => $this->data['id_eksplisit'],
+                        'id_pengguna'   => $pengguna->id_pengguna
+                    ];
+
+                    $notifikasi []= [
+                        'id_pengguna'       => $pengguna->id_pengguna,
+                        'id_pengetahuan'    => $this->data['id_eksplisit'],
+                        'jenis'             => 'Tag Eksplisit',
+                        'deskripsi'         => ''
+                    ];
+                }
+            }
+            Tag_eksplisit_m::insert($tagData);
+            Notifikasi_m::insert($notifikasi);
+            $this->flashmsg('Data tag berhasil ditambah');
+            redirect('unit/detail-pengetahuan-eksplisit/' . $this->data['id_eksplisit']);
         }
 
         $this->load->helper('timeago');
+        $this->data['pengguna'] = Pengguna_m::get();
         $this->data['title'] = 'Detail Pengetahuan Eksplisit';
         $this->data['content'] = 'detail_pengetahuan_eksplisit';
         $this->template($this->data, $this->module);
@@ -426,8 +499,35 @@ class Unit extends MY_Controller
 
     public function share_tacit()
     {
+        if ($this->POST('like'))
+        {
+            $this->load->model('Like_tacit_m');
+            $like = Like_tacit_m::where('id_tacit', $this->POST('id_tacit'))
+                    ->where('id_pengguna', $this->data['id_pengguna'])
+                    ->first();
+
+            if (isset($like))
+            {
+                $like->delete();
+                $data = ['response' => 'unlike'];
+            }
+            else
+            {
+                $like = new Like_tacit_m();
+                $like->id_tacit     = $this->POST('id_tacit');
+                $like->id_pengguna  = $this->data['id_pengguna'];
+                $like->save();
+                $data = ['response' => 'like'];
+            }
+
+            echo json_encode($data);
+            exit;
+        }
+
         $this->load->model('Pengetahuan_tacit_m');
-        $this->data['pengetahuan_tacit'] = Pengetahuan_tacit_m::where('status', 'Valid')->get();
+        $this->data['pengetahuan_tacit'] = Pengetahuan_tacit_m::with('like', 'komentar')
+                                            ->where('status', 'Valid')
+                                            ->get();
         $this->data['title'] = 'Pengetahuan Tacit';
         $this->data['content'] = 'share_tacit';
         $this->template($this->data, $this->module);
@@ -435,8 +535,35 @@ class Unit extends MY_Controller
 
     public function share_eksplisit()
     {
+        if ($this->POST('like'))
+        {
+            $this->load->model('Like_eksplisit_m');
+            $like = Like_eksplisit_m::where('id_eksplisit', $this->POST('id_eksplisit'))
+                    ->where('id_pengguna', $this->data['id_pengguna'])
+                    ->first();
+                    
+            if (isset($like))
+            {
+                $like->delete();
+                $data = ['response' => 'unlike'];
+            }
+            else
+            {
+                $like = new Like_eksplisit_m();
+                $like->id_eksplisit = $this->POST('id_eksplisit');
+                $like->id_pengguna  = $this->data['id_pengguna'];
+                $like->save();
+                $data = ['response' => 'like'];
+            }
+
+            echo json_encode($data);
+            exit;
+        }
+
         $this->load->model('Pengetahuan_eksplisit_m');
-        $this->data['pengetahuan_eksplisit'] = Pengetahuan_eksplisit_m::where('status', 'Valid')->get();
+        $this->data['pengetahuan_eksplisit'] = Pengetahuan_eksplisit_m::with('like', 'komentar')
+                                            ->where('status', 'Valid')
+                                            ->get();
         $this->data['title'] = 'Pengetahuan Eksplisit';
         $this->data['content'] = 'share_eksplisit';
         $this->template($this->data, $this->module);
@@ -483,6 +610,33 @@ class Unit extends MY_Controller
                                 ->get();
         $this->data['title'] = 'My Reward';
         $this->data['content'] = 'my_reward';
+        $this->template($this->data, $this->module);
+    }
+
+    public function cari_pengetahuan()
+    {
+        $this->data['search']   = $this->POST('search');
+        if (!isset($this->data['search']) or empty($this->data['search']))
+        {
+            $this->flashmsg('Anda harus memasukkan kata kunci pencarian', 'warning');
+            redirect('pakar');
+        }
+
+        $this->data['query']    = $this->POST('query');
+        $this->load->model('Pengetahuan_tacit_m');
+        $this->load->model('Pengetahuan_eksplisit_m');
+
+        $this->data['pengetahuan_tacit']        = Pengetahuan_tacit_m::
+                                                    where('judul', 'like', '%' . $this->data['query'] . '%')
+                                                    ->orWhere('isi', 'like', '%' . $this->data['query'] . '%')
+                                                    ->get();
+        $this->data['pengetahuan_eksplisit']    = Pengetahuan_eksplisit_m::
+                                                    where('judul', 'like', '%' . $this->data['query'] . '%')
+                                                    ->orWhere('keterangan', 'like', '%' . $this->data['query'] . '%')
+                                                    ->orWhere('referensi', 'like', '%' . $this->data['query'] . '%')
+                                                    ->get();
+        $this->data['title']    = 'Cari Pengetahuan';
+        $this->data['content']  = 'cari_pengetahuan';
         $this->template($this->data, $this->module);
     }
 }

@@ -2,7 +2,28 @@
     <!-- BEGIN PAGE CONTENT INNER -->
     <div class="row margin-top-10">
         <div class="col-md-12">
-            <h2>Selamat Datang.</h2>
+            <div class="jumbotron">
+                <div class="container">
+                    <center>
+                        <h3>Knowledge Management System PTPN 7</h3>
+                        <h4>Unit Usaha Sungai Lengi Bagian Pemeliharaan Tanaman</h4>
+                        <img src="<?= base_url('assets/foto/logo.jpg') ?>">
+                        <br><br>
+                        <?= form_open('pakar/cari-pengetahuan', ['class' => 'form-horizontal']) ?>
+                        <div class="input-group" style="width: 50% !important;">
+                            <input type="text" name="query" class="form-control" placeholder="Masukkan pencarian pengetahuan">
+                            <span class="input-group-btn">
+                                <input type="submit" name="search" value="Cari" class="btn blue">
+                            </span>
+                        </div>                
+                        <?= form_close() ?>
+                    </center>
+                </div> 
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
             <a href="<?= base_url('pakar/pengetahuan-tacit')?>">
                 <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
                     <div class="dashboard-stat red">

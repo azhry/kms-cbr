@@ -10,7 +10,7 @@
 					</div>
 				</div>
 				<div class="portlet-body">
-					<?= form_open_multipart('anggota-lumbung/add-pengetahuan-eksplisit') ?>
+					<?= form_open_multipart('unit/add-pengetahuan-eksplisit') ?>
 					<div class="form-group">
 						<label for="judul">Judul</label>
 						<input type="text" name="judul" class="form-control">
