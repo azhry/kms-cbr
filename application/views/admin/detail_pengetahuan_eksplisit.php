@@ -22,6 +22,20 @@
 			<div class="portlet box green">
 				<div class="portlet-title">
 					<div class="caption">
+						Lampiran
+					</div>
+				</div>
+				<div class="portlet-body">					
+					<?php if (file_exists(FCPATH . 'assets/lampiran/' . $pengetahuan_eksplisit->lampiran)): ?>
+						<u><a href="<?= base_url('assets/lampiran/' . $pengetahuan_eksplisit->lampiran) ?>"><?= $pengetahuan_eksplisit->lampiran ?></a></u>
+					<?php else: ?>
+						Tidak ada lampiran
+					<?php endif; ?>
+				</div>
+			</div>
+			<div class="portlet box green">
+				<div class="portlet-title">
+					<div class="caption">
 						Referensi
 					</div>
 				</div>

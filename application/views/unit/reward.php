@@ -26,7 +26,7 @@
 									<td><?= $row->reward ?></td>
 									<td><?= $row->poin ?></td>
 									<td>
-										<a href="<?= base_url('anggota-lumbung/reward/' . $row->id_reward) ?>" class="btn red">
+										<a href="<?= base_url('unit/reward/' . $row->id_reward) ?>" class="btn red">
 											Ambil Reward
 										</a>
 									</td>

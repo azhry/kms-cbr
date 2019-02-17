@@ -589,6 +589,20 @@ class Admin extends MY_Controller
             $this->data['pengguna']->jenis_kelamin = $this->POST('jenis_kelamin');
             $this->data['pengguna']->tempat_lahir = $this->POST('tempat_lahir');
             $this->data['pengguna']->tanggal_lahir = $this->POST('tanggal_lahir');
+
+            $password   = $this->POST('password');
+            $rpassword  = $this->POST('rpassword');
+            if (isset($password) && !empty($password))
+            {
+                if ($password !== $rpassword)
+                {
+                    $this->flashmsg('Kolom konfirmasi password harus sama dengan kolom password', 'danger');
+                    redirect('admin/edit-pengguna/' . $this->data['id_pengguna']);
+                }
+
+                $this->data['pengguna']->password = md5($password);
+            }
+
             $this->data['pengguna']->save();
             $this->flashmsg('Data successfully edited');
             redirect('admin/edit_pengguna/' . $this->data['id_pengguna']);

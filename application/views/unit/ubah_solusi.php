@@ -10,7 +10,7 @@
 					</div>
 				</div>
 				<div class="portlet-body">
-					<?= form_open('pakar/ubah-solusi/' . $id_masalah) ?>
+					<?= form_open('unit/ubah-solusi/' . $id_masalah) ?>
 					<div class="form-group">
 						<button type="button" onclick="tambah_solusi();" class="btn blue btn-xs">
 							<i class="fa fa-plus"></i> Tambah Solusi
@@ -27,7 +27,7 @@
 								echo '<input type="text" name="solusi[]" value="' . $solusi->solusi . '" class="form-control">';
 								echo '</div>';
 								echo '<div class="col-md-3">';
-								echo $solusi->status == 'Pending' ? '<button onclick="validasi_solusi(' . $solusi->id_solusi . ', this);" type="button" class="btn red"><i class="fa fa-close"></i> Pending</button>' : '<button onclick="validasi_solusi(' . $solusi->id_solusi . ', this);" type="button" class="btn green"><i class="fa fa-check"></i> Valid</button>';
+								echo $solusi->status;
 								echo '</div>';
 								echo '<div class="col-md-3">';
 								echo '<button type="button" onclick="$(this).parent().parent().parent().remove();" class="btn red btn-xs"><i class="fa fa-trash"></i></button>';
@@ -62,30 +62,5 @@
 						'</div>' +
 					'</div>';
 		$('#list-solusi').append(html);
-	}
-
-	function validasi_solusi(id_solusi, obj) {
-		$.ajax({
-			url: '<?= base_url('pakar/ubah-solusi/' . $id_masalah) ?>',
-			type: 'POST',
-			data: {
-				validasi_solusi: true,
-				id_solusi: id_solusi
-			},
-			success: function(response) {
-				const json = $.parseJSON(response);
-				if (json.status == 'Pending') {
-					$(obj).removeClass('green')
-							.addClass('red')
-							.html('<i class="fa fa-close"></i> Pending');
-				} else {
-					$(obj).removeClass('red')
-							.addClass('green')
-							.html('<i class="fa fa-check"></i> Valid');
-				}
-			},
-			error: function(err) { console.log(err.responseText); }
-		});
-		return false;
 	}
 </script>

@@ -6,11 +6,11 @@
 			<div class="portlet box green">
 				<div class="portlet-title">
 					<div class="caption">
-						Masalah
+						Pengguna
 					</div>
 				</div>
 				<div class="portlet-body">
-					<a class="btn green" href="<?= base_url('unit/add-masalah') ?>">
+					<a class="btn green" href="<?= base_url('admin/add-pengguna') ?>">
 						<i class="fa fa-plus"></i> Tambah Data
 					</a>
 					<br><br>
@@ -18,37 +18,32 @@
 						<thead>
 							<tr>
 								<th>No.</th>
-								<th>Judul</th>
-								<th>Gejala</th>
-								<th>Solusi</th>
+								<th>NIP</th>
+								<th>Nama</th>
+								<th>Jenis Kelamin</th>
+								<th>Role</th>
+								<th>Poin</th>
 								<th>Aksi</th>
 							</tr>
 						</thead>
 						<tbody>
-							<?php foreach ($masalah as $i => $row): ?>
+							<?php foreach ($pengguna as $i => $row): ?>
 								<tr>
 									<td><?= $i + 1 ?></td>
-									<td><?= $row->judul ?></td>
-									<td>
-										<ul>
-											<?php foreach ($row->gejala as $gejala): ?>
-												<li><?= $gejala->gejala->gejala ?></li>
-											<?php endforeach; ?>
-										</ul>
-									</td>
-									<td>
-										<ul>
-											<?php foreach ($row->solusi as $solusi): ?>
-												<li><?= $solusi->solusi ?></li>
-											<?php endforeach; ?>
-										</ul>
-									</td>
+									<td><?= $row->nip ?></td>
+									<td><?= $row->nama ?></td>
+									<td><?= $row->jenis_kelamin ?></td>
+									<td><?= $row->role->role ?></td>
+									<td><?= $row->poin ?></td>
 									<td>
 										<div class="btn-group">
-											<a href="<?= base_url('unit/edit-masalah/' . $row->id_masalah) ?>" class="btn green">
+											<a href="<?= base_url('admin/detail-pengguna/' . $row->id_pengguna) ?>" class="btn blue">
+												<i class="fa fa-eye"></i>
+											</a>
+											<a href="<?= base_url('admin/edit-pengguna/' . $row->id_pengguna) ?>" class="btn green">
 												<i class="fa fa-edit"></i>
 											</a>
-											<a href="<?= base_url('unit/masalah/' . $row->id_masalah) ?>" class="btn red">
+											<a href="<?= base_url('admin/pengguna/' . $row->id_pengguna) ?>" class="btn red">
 												<i class="fa fa-trash"></i>
 											</a>
 										</div>

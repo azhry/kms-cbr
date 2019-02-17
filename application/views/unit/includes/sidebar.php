@@ -32,6 +32,11 @@
                                 <span class="title">Kasus</span>
                             </a>
                         </li>
+                        <li>
+                            <a href="<?= base_url('unit/data-revise') ?>">
+                                <span class="title">Data Revise</span>
+                            </a>
+                        </li>
                     </ul>
                 </li>
                 <li>

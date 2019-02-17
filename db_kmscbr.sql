@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 16 Feb 2019 pada 15.34
+-- Generation Time: 17 Feb 2019 pada 22.22
 -- Versi Server: 10.1.28-MariaDB
 -- PHP Version: 7.1.11
 
@@ -223,11 +223,12 @@ CREATE TABLE `notifikasi` (
 --
 
 INSERT INTO `notifikasi` (`id_notifikasi`, `id_pengguna`, `id_pengetahuan`, `jenis`, `deskripsi`, `dilihat`, `created_at`, `updated_at`) VALUES
-(1, 4, 2, 'Tacit', '', 1, '2019-02-14 14:28:44', '2019-02-16 14:13:05'),
-(2, 4, 2, 'Tacit', '', 1, '2019-02-14 14:29:08', '2019-02-16 14:13:05'),
+(1, 4, 2, 'Tacit', '', 1, '2019-02-14 14:28:44', '2019-02-17 21:08:56'),
+(2, 4, 2, 'Tacit', '', 1, '2019-02-14 14:29:08', '2019-02-17 21:08:56'),
 (3, 1, 2, 'Tag Tacit', '', 0, '2019-02-16 11:35:10', '2019-02-16 11:35:10'),
 (4, 1, 8, 'Tag Eksplisit', '', 0, '2019-02-16 11:47:12', '2019-02-16 11:47:12'),
-(5, 2, 8, 'Tag Eksplisit', '', 0, '2019-02-16 11:47:12', '2019-02-16 11:47:12');
+(5, 2, 8, 'Tag Eksplisit', '', 1, '2019-02-16 11:47:12', '2019-02-17 21:20:58'),
+(6, 4, 1, 'Tag Tacit', '', 1, '2019-02-17 16:32:10', '2019-02-17 21:08:56');
 
 -- --------------------------------------------------------
 
@@ -242,6 +243,14 @@ CREATE TABLE `penerima_reward` (
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data untuk tabel `penerima_reward`
+--
+
+INSERT INTO `penerima_reward` (`id`, `id_reward`, `id_pengguna`, `created_at`, `updated_at`) VALUES
+(1, 2, 4, '2019-02-17 16:30:04', '2019-02-17 16:30:04'),
+(2, 2, 4, '2019-02-17 16:30:12', '2019-02-17 16:30:12');
 
 -- --------------------------------------------------------
 
@@ -322,7 +331,7 @@ CREATE TABLE `pengguna` (
 INSERT INTO `pengguna` (`id_pengguna`, `nip`, `id_role`, `nama`, `jenis_kelamin`, `tempat_lahir`, `tanggal_lahir`, `password`, `poin`, `created_at`, `updated_at`) VALUES
 (1, '09021181419007', 1, 'Azhary Arliansyah', 'Laki-laki', 'Palembang', '1996-08-05', '985fabf8f96dc1c4c306341031569937', 0, '2019-02-01 11:36:31', '2019-02-04 13:48:53'),
 (2, 'test', 2, 'Tests', 'Laki-laki', 'testr', '3231-12-31', '827ccb0eea8a706c4c34a16891f84e7b', 0, '2019-02-04 09:29:59', '2019-02-04 09:34:12'),
-(4, 'user', 3, 'User', 'Laki-laki', 'test', '2122-12-12', '827ccb0eea8a706c4c34a16891f84e7b', 25, '2019-02-04 13:51:32', '2019-02-14 14:29:08'),
+(4, 'user', 3, 'User', 'Laki-laki', 'test', '2122-12-12', '827ccb0eea8a706c4c34a16891f84e7b', 5, '2019-02-04 13:51:32', '2019-02-17 16:30:12'),
 (5, 'admin', 4, 'Admin', 'Laki-laki', 'Palembang', '2019-02-03', '827ccb0eea8a706c4c34a16891f84e7b', 0, '2019-02-16 14:32:00', '2019-02-16 14:32:00');
 
 -- --------------------------------------------------------
@@ -381,6 +390,7 @@ CREATE TABLE `solusi` (
   `id_solusi` int(11) NOT NULL,
   `id_masalah` int(11) NOT NULL,
   `solusi` text NOT NULL,
+  `status` enum('Valid','Pending') NOT NULL DEFAULT 'Valid',
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -389,12 +399,12 @@ CREATE TABLE `solusi` (
 -- Dumping data untuk tabel `solusi`
 --
 
-INSERT INTO `solusi` (`id_solusi`, `id_masalah`, `solusi`, `created_at`, `updated_at`) VALUES
-(9, 4, 'Menimbun dengan tanah kering atau batu kerikil', '2019-02-04 08:16:56', '2019-02-04 08:16:56'),
-(10, 5, 'Diratakan kembali dengan stombal / alat berat', '2019-02-04 08:17:26', '2019-02-04 08:17:26'),
-(11, 6, 'Ditimbun dengan kerikil / batu pecah', '2019-02-04 08:18:04', '2019-02-04 08:18:04'),
-(12, 6, 'Kemudian digleder dengan alat berat', '2019-02-04 08:18:04', '2019-02-04 08:18:04'),
-(13, 3, 'Menimbun dengan pelepah pohon', '2019-02-15 16:51:36', '2019-02-15 16:51:36');
+INSERT INTO `solusi` (`id_solusi`, `id_masalah`, `solusi`, `status`, `created_at`, `updated_at`) VALUES
+(9, 4, 'Menimbun dengan tanah kering atau batu kerikil', 'Valid', '2019-02-04 08:16:56', '2019-02-17 21:16:37'),
+(10, 5, 'Diratakan kembali dengan stombal / alat berat', 'Valid', '2019-02-04 08:17:26', '2019-02-17 21:16:43'),
+(11, 6, 'Ditimbun dengan kerikil / batu pecah', 'Valid', '2019-02-04 08:18:04', '2019-02-17 21:16:49'),
+(12, 6, 'Kemudian digleder dengan alat berat', 'Valid', '2019-02-04 08:18:04', '2019-02-17 21:16:57'),
+(18, 3, 'Menimbun dengan pelepah pohon', 'Valid', '2019-02-17 21:20:57', '2019-02-17 21:20:57');
 
 -- --------------------------------------------------------
 
@@ -437,7 +447,8 @@ CREATE TABLE `tag_tacit` (
 --
 
 INSERT INTO `tag_tacit` (`id_tag`, `id_tacit`, `id_pengguna`, `created_at`, `updated_at`) VALUES
-(6, 2, 1, '2019-02-16 11:35:10', '2019-02-16 11:35:10');
+(6, 2, 1, '2019-02-16 11:35:10', '2019-02-16 11:35:10'),
+(7, 1, 4, '2019-02-17 16:32:10', '2019-02-17 16:32:10');
 
 -- --------------------------------------------------------
 
@@ -617,7 +628,7 @@ ALTER TABLE `gejala`
 -- AUTO_INCREMENT for table `gejala_masalah`
 --
 ALTER TABLE `gejala_masalah`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `kategori`
@@ -641,7 +652,7 @@ ALTER TABLE `komentar_tacit`
 -- AUTO_INCREMENT for table `like_eksplisit`
 --
 ALTER TABLE `like_eksplisit`
-  MODIFY `id_like` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_like` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `like_tacit`
@@ -653,19 +664,19 @@ ALTER TABLE `like_tacit`
 -- AUTO_INCREMENT for table `masalah`
 --
 ALTER TABLE `masalah`
-  MODIFY `id_masalah` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id_masalah` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `notifikasi`
 --
 ALTER TABLE `notifikasi`
-  MODIFY `id_notifikasi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id_notifikasi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `penerima_reward`
 --
 ALTER TABLE `penerima_reward`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `pengetahuan_eksplisit`
@@ -701,7 +712,7 @@ ALTER TABLE `role`
 -- AUTO_INCREMENT for table `solusi`
 --
 ALTER TABLE `solusi`
-  MODIFY `id_solusi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id_solusi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `tag_eksplisit`
@@ -713,7 +724,7 @@ ALTER TABLE `tag_eksplisit`
 -- AUTO_INCREMENT for table `tag_tacit`
 --
 ALTER TABLE `tag_tacit`
-  MODIFY `id_tag` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id_tag` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `unit`

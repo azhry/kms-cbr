@@ -178,7 +178,7 @@ class Pakar extends MY_Controller
         if ($this->POST('submit'))
         {
             $masalah = new Masalah_m();
-            $masalah->id_bagian = $this->POST('id_bagian');
+            $masalah->id_unit = $this->POST('id_unit');
             $masalah->judul = $this->POST('judul');
             $masalah->save();
 
@@ -692,6 +692,16 @@ class Pakar extends MY_Controller
         $this->load->model('Masalah_m');
         $this->data['masalah'] = Masalah_m::find($this->data['id_masalah']);
         $this->check_allowance(!isset($this->data['masalah']), ['Data not found', 'danger']);
+
+        if ($this->POST('validasi_solusi'))
+        {
+            $this->load->model('Solusi_m');
+            $data = Solusi_m::find($this->POST('id_solusi'));
+            $data->status = $data->status == 'Pending' ? 'Valid' : 'Pending';
+            $data->save();
+            echo json_encode(['status' => $data->status]);
+            exit;
+        }
 
         if ($this->POST('submit'))
         {

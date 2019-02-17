@@ -10,21 +10,21 @@
 					</div>
 				</div>
 				<div class="portlet-body">
-					<?= form_open('anggota-lumbung/edit-masalah/' . $id_masalah) ?>
+					<?= form_open('unit/edit-masalah/' . $id_masalah) ?>
 					<div class="form-group">
 						<label for="judul">Judul Masalah</label>
 						<input type="text" name="judul" value="<?= $masalah->judul ?>" class="form-control">
 					</div>
 					<div class="form-group">
-						<label for="bagian">Bagian</label>
+						<label for="id_unit">Unit</label>
 						<?php  
 							$opt = [];
-							foreach ($bagian as $row)
+							foreach ($unit as $row)
 							{
-								$opt[$row->id_bagian] = $row->bagian;
+								$opt[$row->id_unit] = $row->unit;
 							}
 
-							echo form_dropdown('id_bagian', $opt, $masalah->id_bagian, ['class' => 'form-control', 'required' => 'required']);
+							echo form_dropdown('id_unit', $opt, $masalah->id_unit, ['class' => 'form-control', 'required' => 'required']);
 						?>
 					</div>
 					<div class="form-group">

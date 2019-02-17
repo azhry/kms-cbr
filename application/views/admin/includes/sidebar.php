@@ -46,6 +46,11 @@
                     </a>
                     <ul class="sub-menu">
                         <li>
+                            <a href="<?= base_url('admin/pengguna') ?>">
+                                <span class="title">Daftar Pengguna</span>
+                            </a>
+                        </li>
+                        <li>
                             <a href="<?= base_url('admin/reward') ?>">
                                 <span class="title">Data Reward</span>
                             </a>

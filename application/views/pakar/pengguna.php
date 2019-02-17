@@ -10,7 +10,7 @@
 					</div>
 				</div>
 				<div class="portlet-body">
-					<a class="btn green" href="<?= base_url('kasubbid/add-pengguna') ?>">
+					<a class="btn green" href="<?= base_url('pakar/add-pengguna') ?>">
 						<i class="fa fa-plus"></i> Tambah Data
 					</a>
 					<br><br>
@@ -37,13 +37,13 @@
 									<td><?= $row->poin ?></td>
 									<td>
 										<div class="btn-group">
-											<a href="<?= base_url('kasubbid/detail-pengguna/' . $row->id_pengguna) ?>" class="btn blue">
+											<a href="<?= base_url('pakar/detail-pengguna/' . $row->id_pengguna) ?>" class="btn blue">
 												<i class="fa fa-eye"></i>
 											</a>
-											<a href="<?= base_url('kasubbid/edit-pengguna/' . $row->id_pengguna) ?>" class="btn green">
+											<a href="<?= base_url('pakar/edit-pengguna/' . $row->id_pengguna) ?>" class="btn green">
 												<i class="fa fa-edit"></i>
 											</a>
-											<a href="<?= base_url('kasubbid/pengguna/' . $row->id_pengguna) ?>" class="btn red">
+											<a href="<?= base_url('pakar/pengguna/' . $row->id_pengguna) ?>" class="btn red">
 												<i class="fa fa-trash"></i>
 											</a>
 										</div>

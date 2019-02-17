@@ -132,7 +132,7 @@ class Unit extends MY_Controller
         if ($this->POST('submit'))
         {
             $masalah = new Masalah_m();
-            $masalah->id_bagian = $this->POST('id_bagian');
+            $masalah->id_unit = $this->POST('id_unit');
             $masalah->judul = $this->POST('judul');
             $masalah->save();
 
@@ -165,8 +165,8 @@ class Unit extends MY_Controller
         $this->load->model('Gejala_m');
         $this->data['gejala'] = Gejala_m::get();
 
-        $this->load->model('Bagian_m');
-        $this->data['bagian'] = Bagian_m::get();
+        $this->load->model('Unit_m');
+        $this->data['unit'] = Unit_m::get();
 
         $this->data['title'] = 'Add Masalah';
         $this->data['content'] = 'add_masalah';
@@ -184,7 +184,7 @@ class Unit extends MY_Controller
 
         if ($this->POST('submit'))
         {
-            $this->data['masalah']->id_bagian = $this->POST('id_bagian');
+            $this->data['masalah']->id_unit = $this->POST('id_unit');
             $this->data['masalah']->judul = $this->POST('judul');
             $this->data['masalah']->save();
 
@@ -221,8 +221,8 @@ class Unit extends MY_Controller
         $this->load->model('Gejala_m');
         $this->data['gejala'] = Gejala_m::get();
 
-        $this->load->model('Bagian_m');
-        $this->data['bagian'] = Bagian_m::get();
+        $this->load->model('Unit_m');
+        $this->data['unit'] = Unit_m::get();
 
         $this->data['title'] = 'Edit Masalah';
         $this->data['content'] = 'edit_masalah';
@@ -637,6 +637,52 @@ class Unit extends MY_Controller
                                                     ->get();
         $this->data['title']    = 'Cari Pengetahuan';
         $this->data['content']  = 'cari_pengetahuan';
+        $this->template($this->data, $this->module);
+    }
+
+    public function data_revise()
+    {
+        $this->load->model('Masalah_m');
+
+        $this->data['masalah'] = Masalah_m::get();
+        $this->data['title'] = 'Data Revise';
+        $this->data['content'] = 'data_revise';
+        $this->template($this->data, $this->module);
+    }
+
+    public function ubah_solusi()
+    {
+        $this->data['id_masalah'] = $this->uri->segment(3);
+        $this->check_allowance(!isset($this->data['id_masalah']));
+
+        $this->load->model('Masalah_m');
+        $this->data['masalah'] = Masalah_m::find($this->data['id_masalah']);
+        $this->check_allowance(!isset($this->data['masalah']), ['Data not found', 'danger']);
+
+
+        if ($this->POST('submit'))
+        {
+
+            $this->load->model('Solusi_m');
+            $solusi = [];
+            foreach ($this->POST('solusi') as $s)
+            {
+                $solusi []= [
+                    'id_masalah'    => $this->data['masalah']->id_masalah,
+                    'solusi'        => $s,
+                    'status'        => 'Pending'
+                ];
+            }
+            Solusi_m::where('id_masalah', $this->data['masalah']->id_masalah)
+                                ->delete();
+            Solusi_m::insert($solusi);
+
+            $this->flashmsg('Data successfully edited');
+            redirect('unit/ubah-solusi/' . $this->data['id_masalah']);
+        }
+
+        $this->data['title']    = 'Ubah Solusi';
+        $this->data['content']  = 'ubah_solusi';
         $this->template($this->data, $this->module);
     }
 }

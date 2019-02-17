@@ -10,7 +10,7 @@
 					</div>
 				</div>
 				<div class="portlet-body">
-					<?= form_open('pakar/edit-pengguna/' . $id_pengguna) ?>
+					<?= form_open('admin/edit-pengguna/' . $id_pengguna) ?>
 					<div class="form-group">
 						<label for="nip">NIP</label>
 						<input type="text" name="nip" value="<?= $pengguna->nip ?>" class="form-control">
@@ -47,6 +47,17 @@
 							echo form_dropdown('id_role', $opt, $pengguna->id_role, ['required' => 'required', 'class' => 'form-control']);
 						?>
 					</div>
+					<hr>
+					<h3>Reset Password</h3>
+					<div class="form-group">
+						<label for="password">Password Baru</label>
+						<input type="password" name="password" class="form-control">
+					</div>
+					<div class="form-group">
+						<label for="rpassword">Konfirmasi Password</label>
+						<input type="password" name="rpassword" class="form-control">
+					</div>
+					<hr>
 					<div class="form-group">
 						<input type="submit" name="submit" class="btn green">
 					</div>

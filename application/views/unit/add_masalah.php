@@ -10,17 +10,17 @@
 					</div>
 				</div>
 				<div class="portlet-body">
-					<?= form_open('anggota-lumbung/add-masalah') ?>
+					<?= form_open('unit/add-masalah') ?>
 					<div class="form-group">
 						<label for="judul">Judul Masalah</label>
 						<input type="text" name="judul" class="form-control">
 					</div>
 					<div class="form-group">
-						<label for="bagian">Bagian</label>
-						<select class="form-control" name="id_bagian" required>
-							<option value="">Pilih Bagian</option>
-							<?php foreach ($bagian as $row): ?>
-								<option value="<?= $row->id_bagian ?>"><?= $row->bagian ?></option>
+						<label for="id_unit">Unit</label>
+						<select class="form-control" name="id_unit" required>
+							<option value="">Pilih Unit</option>
+							<?php foreach ($unit as $row): ?>
+								<option value="<?= $row->id_unit ?>"><?= $row->unit ?></option>
 							<?php endforeach; ?>
 						</select>
 					</div>

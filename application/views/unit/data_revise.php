@@ -6,14 +6,10 @@
 			<div class="portlet box green">
 				<div class="portlet-title">
 					<div class="caption">
-						Masalah
+						Data Revise
 					</div>
 				</div>
 				<div class="portlet-body">
-					<a class="btn green" href="<?= base_url('unit/add-masalah') ?>">
-						<i class="fa fa-plus"></i> Tambah Data
-					</a>
-					<br><br>
 					<table class="table table-hover table-striped table-bordered">
 						<thead>
 							<tr>
@@ -45,11 +41,8 @@
 									</td>
 									<td>
 										<div class="btn-group">
-											<a href="<?= base_url('unit/edit-masalah/' . $row->id_masalah) ?>" class="btn green">
-												<i class="fa fa-edit"></i>
-											</a>
-											<a href="<?= base_url('unit/masalah/' . $row->id_masalah) ?>" class="btn red">
-												<i class="fa fa-trash"></i>
+											<a href="<?= base_url('unit/ubah-solusi/' . $row->id_masalah) ?>" class="btn green">
+												<i class="fa fa-edit"></i> Ubah Solusi
 											</a>
 										</div>
 									</td>

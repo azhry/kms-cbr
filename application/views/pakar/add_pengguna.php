@@ -10,7 +10,7 @@
 					</div>
 				</div>
 				<div class="portlet-body">
-					<?= form_open('kasubbid/add-pengguna') ?>
+					<?= form_open('pakar/add-pengguna') ?>
 					<div class="form-group">
 						<label for="nip">NIP</label>
 						<input type="text" name="nip" class="form-control">
