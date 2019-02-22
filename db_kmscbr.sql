@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 17 Feb 2019 pada 22.22
+-- Generation Time: 22 Feb 2019 pada 11.38
 -- Versi Server: 10.1.28-MariaDB
 -- PHP Version: 7.1.11
 
@@ -45,7 +45,8 @@ INSERT INTO `gejala` (`id_gejala`, `gejala`, `representasi`, `status`, `created_
 (3, 'Air Hujan Menggenang', 10, 'Verified', '2019-02-04 08:14:14', '2019-02-04 08:14:14'),
 (4, 'Tanah Menjadi Lembut', 20, 'Verified', '2019-02-04 08:14:31', '2019-02-04 08:14:31'),
 (5, 'Batu Pecah Terpencar', 30, 'Verified', '2019-02-04 08:14:50', '2019-02-04 08:14:50'),
-(6, 'Banyak Terdapat Lobang', 10, 'Verified', '2019-02-04 08:15:02', '2019-02-04 08:15:02');
+(6, 'Banyak Terdapat Lobang', 10, 'Verified', '2019-02-04 08:15:02', '2019-02-04 08:15:02'),
+(7, 'testing', 0, 'Pending', '2019-02-22 06:10:11', '2019-02-22 06:10:11');
 
 -- --------------------------------------------------------
 
@@ -223,12 +224,12 @@ CREATE TABLE `notifikasi` (
 --
 
 INSERT INTO `notifikasi` (`id_notifikasi`, `id_pengguna`, `id_pengetahuan`, `jenis`, `deskripsi`, `dilihat`, `created_at`, `updated_at`) VALUES
-(1, 4, 2, 'Tacit', '', 1, '2019-02-14 14:28:44', '2019-02-17 21:08:56'),
-(2, 4, 2, 'Tacit', '', 1, '2019-02-14 14:29:08', '2019-02-17 21:08:56'),
-(3, 1, 2, 'Tag Tacit', '', 0, '2019-02-16 11:35:10', '2019-02-16 11:35:10'),
-(4, 1, 8, 'Tag Eksplisit', '', 0, '2019-02-16 11:47:12', '2019-02-16 11:47:12'),
-(5, 2, 8, 'Tag Eksplisit', '', 1, '2019-02-16 11:47:12', '2019-02-17 21:20:58'),
-(6, 4, 1, 'Tag Tacit', '', 1, '2019-02-17 16:32:10', '2019-02-17 21:08:56');
+(1, 4, 2, 'Tacit', '', 1, '2019-02-14 14:28:44', '2019-02-22 08:57:36'),
+(2, 4, 2, 'Tacit', '', 1, '2019-02-14 14:29:08', '2019-02-22 08:57:36'),
+(3, 1, 2, 'Tag Tacit', '', 1, '2019-02-16 11:35:10', '2019-02-22 06:10:18'),
+(4, 1, 8, 'Tag Eksplisit', '', 1, '2019-02-16 11:47:12', '2019-02-22 06:10:18'),
+(5, 2, 8, 'Tag Eksplisit', '', 1, '2019-02-16 11:47:12', '2019-02-22 10:07:38'),
+(6, 4, 1, 'Tag Tacit', '', 1, '2019-02-17 16:32:10', '2019-02-22 08:57:36');
 
 -- --------------------------------------------------------
 
@@ -302,7 +303,8 @@ CREATE TABLE `pengetahuan_tacit` (
 
 INSERT INTO `pengetahuan_tacit` (`id_tacit`, `id_kategori`, `id_pengguna`, `judul`, `isi`, `status`, `created_at`, `updated_at`) VALUES
 (1, 3, 1, 'jduul', 'isiii', 'Valid', '2019-02-03 12:22:28', '2019-02-03 15:14:27'),
-(2, 3, 4, 'judul 1e', 'asdasd', 'Valid', '2019-02-04 14:01:14', '2019-02-14 14:29:08');
+(2, 3, 4, 'judul 1e', 'asdasd', 'Valid', '2019-02-04 14:01:14', '2019-02-14 14:29:08'),
+(3, 3, 4, 'judul tacit', 'isi tacit', 'Pending', '2019-02-22 06:15:41', '2019-02-22 06:15:41');
 
 -- --------------------------------------------------------
 
@@ -332,7 +334,9 @@ INSERT INTO `pengguna` (`id_pengguna`, `nip`, `id_role`, `nama`, `jenis_kelamin`
 (1, '09021181419007', 1, 'Azhary Arliansyah', 'Laki-laki', 'Palembang', '1996-08-05', '985fabf8f96dc1c4c306341031569937', 0, '2019-02-01 11:36:31', '2019-02-04 13:48:53'),
 (2, 'test', 2, 'Tests', 'Laki-laki', 'testr', '3231-12-31', '827ccb0eea8a706c4c34a16891f84e7b', 0, '2019-02-04 09:29:59', '2019-02-04 09:34:12'),
 (4, 'user', 3, 'User', 'Laki-laki', 'test', '2122-12-12', '827ccb0eea8a706c4c34a16891f84e7b', 5, '2019-02-04 13:51:32', '2019-02-17 16:30:12'),
-(5, 'admin', 4, 'Admin', 'Laki-laki', 'Palembang', '2019-02-03', '827ccb0eea8a706c4c34a16891f84e7b', 0, '2019-02-16 14:32:00', '2019-02-16 14:32:00');
+(5, 'admin', 4, 'Admin', 'Laki-laki', 'Palembang', '2019-02-03', '827ccb0eea8a706c4c34a16891f84e7b', 0, '2019-02-16 14:32:00', '2019-02-16 14:32:00'),
+(6, '121212', 3, 'Azzzz', 'Laki-laki', 'Palembang', '1996-08-05', '985fabf8f96dc1c4c306341031569937', 0, '2019-02-22 06:19:23', '2019-02-22 06:19:23'),
+(7, 'asisten', 5, 'Asisten q', 'Perempuan', 'Palembang', '1996-08-05', '827ccb0eea8a706c4c34a16891f84e7b', 0, '2019-02-22 10:32:23', '2019-02-22 10:35:55');
 
 -- --------------------------------------------------------
 
@@ -378,7 +382,8 @@ INSERT INTO `role` (`id_role`, `role`, `deskripsi`, `created_at`, `updated_at`) 
 (1, 'Kasubbid', '', '2019-02-01 11:34:07', '2019-02-01 11:34:07'),
 (2, 'Pakar', '', '2019-02-01 11:34:07', '2019-02-01 11:34:07'),
 (3, 'Unit', '', '2019-02-01 15:03:19', '2019-02-14 15:51:37'),
-(4, 'Admin', '', '2019-02-16 14:31:13', '2019-02-16 14:31:13');
+(4, 'Admin', '', '2019-02-16 14:31:13', '2019-02-16 14:31:13'),
+(5, 'Asisten Unit', '', '2019-02-22 08:32:07', '2019-02-22 08:32:07');
 
 -- --------------------------------------------------------
 
@@ -622,13 +627,13 @@ ALTER TABLE `unit`
 -- AUTO_INCREMENT for table `gejala`
 --
 ALTER TABLE `gejala`
-  MODIFY `id_gejala` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id_gejala` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `gejala_masalah`
 --
 ALTER TABLE `gejala_masalah`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `kategori`
@@ -664,7 +669,7 @@ ALTER TABLE `like_tacit`
 -- AUTO_INCREMENT for table `masalah`
 --
 ALTER TABLE `masalah`
-  MODIFY `id_masalah` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id_masalah` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `notifikasi`
@@ -688,13 +693,13 @@ ALTER TABLE `pengetahuan_eksplisit`
 -- AUTO_INCREMENT for table `pengetahuan_tacit`
 --
 ALTER TABLE `pengetahuan_tacit`
-  MODIFY `id_tacit` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_tacit` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `pengguna`
 --
 ALTER TABLE `pengguna`
-  MODIFY `id_pengguna` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id_pengguna` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `reward`
@@ -706,7 +711,7 @@ ALTER TABLE `reward`
 -- AUTO_INCREMENT for table `role`
 --
 ALTER TABLE `role`
-  MODIFY `id_role` tinyint(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id_role` tinyint(4) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `solusi`
