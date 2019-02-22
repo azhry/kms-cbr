@@ -26,7 +26,7 @@
 					</ul>
 					<div class="tab-content">
 						<div class="tab-pane fade active in" id="tab_1_1">
-							<?= form_open_multipart('anggota-lumbung/profile') ?>
+							<?= form_open_multipart('unit/profile') ?>
 							<div class="form-group">
 								<label for="foto">Foto</label>
 								<center>

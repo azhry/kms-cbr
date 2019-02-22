@@ -40,6 +40,22 @@
 					<?= form_close() ?>
 				</div>
 			</div>
+			<div class="portlet box green">
+				<div class="portlet-title">
+					<div class="caption">
+						Request Gejala
+					</div>
+				</div>
+				<div class="portlet-body">
+					<?= form_open('kasubbid/problem-solving') ?>
+					<div class="form-group">
+						<label for="gejala">Gejala</label>
+						<input type="text" name="gejala" class="form-control">
+					</div>
+					<input type="submit" name="request" value="Submit" class="btn blue">					
+					<?= form_close() ?>
+				</div>
+			</div>
 			<?php if (isset($solusi)): ?>
 			<div class="portlet box green">
 				<div class="portlet-title">

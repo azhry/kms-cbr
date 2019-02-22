@@ -10,7 +10,7 @@
 					</div>
 				</div>
 				<div class="portlet-body">
-					<?= form_open('anggota-lumbung/edit-pengetahuan-tacit/' . $id_tacit) ?>
+					<?= form_open('unit/edit-pengetahuan-tacit/' . $id_tacit) ?>
 					<div class="form-group">
 						<label for="judul">Judul</label>
 						<input type="text" name="judul" value="<?= $pengetahuan_tacit->judul ?>" class="form-control">

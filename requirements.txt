@@ -1,34 +1,15 @@
-Kak yg ini msh nak di perbaiki ,Ado yg eror , Ado yg salah penempatan ,Ado yg kurang . Ado yg lebih jugo kak . Ini lah aku listke 
+Admin 
+1.role yg di admin :
+-asieten unit
+-pakar
+-anggota unit
+-admin
+2. Masih eror pas tambah penggunanya kak
 
 
-Admin :
-Adminnyo belom Ado halaman untuk mengelola daftar pengguna sistem. (o)
+Kasubit
+1.pas problem solving nyo Samo kayak user . Biso paket problem solving ,biso input gejala ,biso minta revisi (o)
 
-Ditambahi :
- 1. Admin bso menghapus ,mengedit,dan mereset password kak. (o)
-2 . Biso input pengguna (o)
-
-Di ubah :
-Nah untuk data problemnyo. Isi dropdownyo cak user. 
-
-
-User 
-1. Tidak bisa ambil reward (o)
-2. Belum ada fitur revisi di problem solving . Saat solusi yg di tawarkan di nilai user msh salah atau ambigu . User bisa menyarankan untuk di perbaiki ke pakar . Jika sudah di perbaiki ,pakar memvalidasi lagi solusi tersebut.
-3. Tag penggunanya msh eror kak . Ini pas buka notifikikasinyo.  Pas di klik dak bso di buka (o)
-4.lampiran file yg di input di explicit dak muncul . Jd dak biso di download. (o)
-5. Di user, tidak Ado list table  pengetahuan tacit kak . Nah yg di explicitnyo Ado.  Jd user tau status nyo lah valid ato msh pending (o)
-
-Pakar :
-1. waktu input kasus eror kak ( an ancaught exception was encuntered ). (o)
-2. Tidak bisa unggah photo profil ( ini seluruhnya dak bso kak , pas di unggah dak tesimpen ). (o -> chmod 777)
-3. Fitur tambah penggunanya di admin kak . (Ini jgo belom bso jalan kan) (o)
-4.nah Ado dropdow data revisi kak . Ini untuk apo kak ?
-5. Tidak bisa downlod lampiran (ini merato dak biso kak user,kasubit, dll) (o -> chmod 777)
-
-Asisten unit
-1. Nah untuk kasubit ,data problem dan dropdown nyo samo cak user kak .
-2. Terus Ado revisi atas solusi yg di tawarkan . Cak user Nn yg ini .
-3. Ado data kategori di kasubit . Itu di pindah ke pakar kak . 
-
-Ini listnyo kak . Kalo Ado yg dak jelas tanyo b kak
+User
+1. Di aku yg user dak biso nambah tacit kak (404 page not found ) (o)
+2.terus poinnyo dak nambah walau lah nambah explixit kak

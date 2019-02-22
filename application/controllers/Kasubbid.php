@@ -80,7 +80,8 @@ class Kasubbid extends MY_Controller
 	public function problem_solving()
 	{
 		$this->load->model('Gejala_m');
-		$this->data['gejala'] 	= Gejala_m::get();
+		$this->data['gejala'] 	= Gejala_m::where('status', 'Verified')
+                                    ->get();
 
 		if ($this->POST('submit'))
 		{
@@ -91,6 +92,16 @@ class Kasubbid extends MY_Controller
 			$cbr->fit2($this->data['masalah']);
 			$this->data['solusi'] = $cbr->rank($this->POST('gejala'));
 		}
+
+        if ($this->POST('request'))
+        {
+            $gejala = new Gejala_m();
+            $gejala->gejala = $this->POST('gejala');
+            $gejala->save();
+
+            $this->flashmsg('Data gejala berhasil diminta. Gejala akan dikonfirmasi oleh pakar terlebih dahulu.');
+            redirect('kasubbid/problem-solving');
+        }
 
 		$this->data['title']	= 'Problem Solving';
 		$this->data['content']	= 'problem_solving';
