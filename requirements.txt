@@ -4,7 +4,7 @@ Admin
 -pakar
 -anggota unit
 -admin
-2. Masih eror pas tambah penggunanya kak
+2. Masih eror pas tambah penggunanya kak (o)
 
 
 Kasubit
@@ -12,4 +12,41 @@ Kasubit
 
 User
 1. Di aku yg user dak biso nambah tacit kak (404 page not found ) (o)
-2.terus poinnyo dak nambah walau lah nambah explixit kak
+2.terus poinnyo dak nambah walau lah nambah explixit kak (o)
+
+Admin 
+- visi search pengetahuan
+-kelola data pribadi ( edit data pribadi)
+-lihat data tacit dan explicit . Tampil data pengetahuan
+-kelola data pengetahuan tacit. Input edit update . Delete
+-problem solving . Input gejala identifikasi kasus
+-lihat posting di sukai
+-kelola data pengguna . Input edit update delete data pengguna
+-kelola data unit . Input edit update delete 
+-lihat penerima reward
+-lihat data notifikasi
+
+
+
+Anggota unit
+-bisa search pengetahuan
+-kelola data pribadi
+-lihat data pengetahuan tacit dan explicit . Tampil data
+-kelola data pengetahuan tacit dan explicit.  Input edit update delete
+-lihat pengetahuan tacit dan explicit yang di bagikan
+-problem solving . Input gejala gejala
+-Lihat posting yang di sukai
+-lihat data notifikasi
+
+
+Pakar : 
+bedanyo dgn yg di atas :
+1. Kelola data unit
+2. Kelola data gejala 
+3.kelola data kasus
+4. Kelola data request gejala
+5.kelola data revisi
+
+
+Asisten unit 
+Bedanyo : mengelola reward Bae kak . Kalo fitur2 Samo cak user kak

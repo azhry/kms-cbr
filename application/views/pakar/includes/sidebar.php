@@ -108,6 +108,11 @@
                         <span class="title">Pengguna</span>
                     </a>
                 </li>
+                <li>
+                    <a href="<?= base_url('pakar/unit') ?>">
+                        <span class="title">Data Unit</span>
+                    </a>
+                </li>
             </ul>
             <!-- END SIDEBAR MENU -->
         </div>

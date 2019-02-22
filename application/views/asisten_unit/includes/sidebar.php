@@ -12,7 +12,7 @@
             <!-- DOC: Set data-auto-speed="200" to adjust the sub menu slide up/down speed -->
             <ul class="page-sidebar-menu " data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200">
                 <li>
-                    <a href="<?= base_url('unit') ?>">
+                    <a href="<?= base_url('asisten-unit') ?>">
                         <span class="title">Dashboard</span>
                     </a>
                 </li>
@@ -23,17 +23,17 @@
                     </a>
                     <ul class="sub-menu">
                         <li>
-                            <a href="<?= base_url('unit/problem-solving') ?>">
+                            <a href="<?= base_url('asisten-unit/problem-solving') ?>">
                                 <span class="title">Problem Solving</span>
                             </a>
                         </li>
                         <li>
-                            <a href="<?= base_url('unit/masalah') ?>">
+                            <a href="<?= base_url('asisten-unit/masalah') ?>">
                                 <span class="title">Kasus</span>
                             </a>
                         </li>
                         <li>
-                            <a href="<?= base_url('unit/data-revise') ?>">
+                            <a href="<?= base_url('asisten-unit/data-revise') ?>">
                                 <span class="title">Data Revise</span>
                             </a>
                         </li>
@@ -46,12 +46,12 @@
                     </a>
                     <ul class="sub-menu">
                         <li>
-                            <a href="<?= base_url('unit/pengetahuan-tacit') ?>">
+                            <a href="<?= base_url('asisten-unit/pengetahuan-tacit') ?>">
                                 <span class="title">Tacit</span>
                             </a>
                         </li>
                         <li>
-                            <a href="<?= base_url('unit/pengetahuan-eksplisit') ?>">
+                            <a href="<?= base_url('asisten-unit/pengetahuan-eksplisit') ?>">
                                 <span class="title">Eksplisit</span>
                             </a>
                         </li>
@@ -64,12 +64,12 @@
                     </a>
                     <ul class="sub-menu">
                         <li>
-                            <a href="<?= base_url('unit/share-tacit') ?>">
+                            <a href="<?= base_url('asisten-unit/share-tacit') ?>">
                                 <span class="title">Tacit</span>
                             </a>
                         </li>
                         <li>
-                            <a href="<?= base_url('unit/share-eksplisit') ?>">
+                            <a href="<?= base_url('asisten-unit/share-eksplisit') ?>">
                                 <span class="title">Eksplisit</span>
                             </a>
                         </li>
@@ -82,19 +82,19 @@
                     </a>
                     <ul class="sub-menu">
                         <li>
-                            <a href="<?= base_url('unit/like-tacit') ?>">
+                            <a href="<?= base_url('asisten-unit/like-tacit') ?>">
                                 <span class="title">Tacit</span>
                             </a>
                         </li>
                         <li>
-                            <a href="<?= base_url('unit/like-eksplisit') ?>">
+                            <a href="<?= base_url('asisten-unit/like-eksplisit') ?>">
                                 <span class="title">Eksplisit</span>
                             </a>
                         </li>
                     </ul>
                 </li>
                 <li>
-                    <a href="<?= base_url('unit/reward') ?>">
+                    <a href="<?= base_url('asisten-unit/reward') ?>">
                         <span class="title">Reward</span>
                     </a>
                 </li>

@@ -1,13 +1,13 @@
 <?php 
 
-class Pakar extends MY_Controller
+class Asisten_unit extends MY_Controller
 {
 	public function __construct()
 	{
 		parent::__construct();
-		$this->module = 'pakar';
+		$this->module = 'asisten_unit';
         $this->data['id_role']  = $this->session->userdata('id_role');
-        if (!isset($this->data['id_role']) or $this->data['id_role'] != 2)
+        if (!isset($this->data['id_role']) or $this->data['id_role'] != 5)
         {
           $this->session->sess_destroy();
           redirect('login');
@@ -55,7 +55,7 @@ class Pakar extends MY_Controller
 				if ($password != $rpassword)
 				{
 					$this->flashmsg('Password harus sama dengan konfirmasi password', 'danger');
-					redirect('pakar/profile');
+					redirect('asisten_unit/profile');
 				}
 
 				$this->data['data_pengguna']->password = md5($password);
@@ -65,9 +65,13 @@ class Pakar extends MY_Controller
 			$this->upload($this->data['data_pengguna']->id_pengguna . '.jpg', 'assets/foto', 'foto');
 
 			$this->flashmsg('Data successfully saved');
-			redirect('pakar/profile');
+			redirect('asisten_unit/profile');
 		}
 
+        $this->load->model('Pengetahuan_tacit_m');
+        $this->load->model('Pengetahuan_eksplisit_m');
+        $this->data['pengetahuan_tacit'] = Pengetahuan_tacit_m::where('id_pengguna', $this->data['id_pengguna'])->get();
+        $this->data['pengetahuan_eksplisit'] = Pengetahuan_eksplisit_m::where('id_pengguna', $this->data['id_pengguna'])->get();
 		$this->data['title']	= 'Profile';
 		$this->data['content']	= 'profile';
 		$this->template($this->data, $this->module);
@@ -76,7 +80,8 @@ class Pakar extends MY_Controller
 	public function problem_solving()
 	{
 		$this->load->model('Gejala_m');
-		$this->data['gejala'] 	= Gejala_m::get();
+		$this->data['gejala'] 	= Gejala_m::where('status', 'Verified')
+                                    ->get();
 
 		if ($this->POST('submit'))
 		{
@@ -88,71 +93,20 @@ class Pakar extends MY_Controller
 			$this->data['solusi'] = $cbr->rank($this->POST('gejala'));
 		}
 
+        if ($this->POST('request'))
+        {
+            $gejala = new Gejala_m();
+            $gejala->gejala = $this->POST('gejala');
+            $gejala->save();
+
+            $this->flashmsg('Data gejala berhasil diminta. Gejala akan dikonfirmasi oleh pakar terlebih dahulu.');
+            redirect('asisten_unit/problem-solving');
+        }
+
 		$this->data['title']	= 'Problem Solving';
 		$this->data['content']	= 'problem_solving';
 		$this->template($this->data, $this->module);
 	}
-
-	public function gejala()
-    {
-        $this->data['id_gejala'] = $this->uri->segment(3);
-        $this->load->model('Gejala_m');
-        if (isset($this->data['id_gejala']))
-        {
-            $data = Gejala_m::find($this->data['id_gejala']);
-            $data->delete();
-            $this->flashmsg('Data successfully deleted');
-            redirect('pakar/gejala');
-        }
-
-        $this->data['gejala'] = Gejala_m::get();
-        $this->data['title'] = 'Gejala';
-        $this->data['content'] = 'gejala';
-        $this->template($this->data, $this->module);
-    }
-
-	public function add_gejala()
-    {
-        $this->load->model('Gejala_m');
-        if ($this->POST('submit'))
-        {
-            $gejala = new Gejala_m();
-            $gejala->gejala = $this->POST('gejala');
-            $gejala->representasi = $this->POST('representasi');
-            $gejala->status = 'Verified';
-            $gejala->save();
-            $this->flashmsg('Data successfully added');
-            redirect('pakar/add_gejala');
-        }
-
-        $this->data['title'] = 'Add Gejala';
-        $this->data['content'] = 'add_gejala';
-        $this->template($this->data, $this->module);
-    }
-
-    public function edit_gejala()
-    {
-        $this->data['id_gejala'] = $this->uri->segment(3);
-        $this->check_allowance(!isset($this->data['id_gejala']));
-
-        $this->load->model('Gejala_m');
-        $this->data['gejala'] = Gejala_m::find($this->data['id_gejala']);
-        $this->check_allowance(!isset($this->data['gejala']), ['Data not found', 'danger']);
-
-        if ($this->POST('submit'))
-        {
-            $this->data['gejala']->gejala = $this->POST('gejala');
-            $this->data['gejala']->representasi = $this->POST('representasi');
-            $this->data['gejala']->status = $this->POST('status');
-            $this->data['gejala']->save();
-            $this->flashmsg('Data successfully edited');
-            redirect('pakar/edit_gejala/' . $this->data['id_gejala']);
-        }
-
-        $this->data['title'] = 'Edit Gejala';
-        $this->data['content'] = 'edit_gejala';
-        $this->template($this->data, $this->module);
-    }
 
 	public function masalah()
     {
@@ -163,7 +117,7 @@ class Pakar extends MY_Controller
             $data = Masalah_m::find($this->data['id_masalah']);
             $data->delete();
             $this->flashmsg('Data successfully deleted');
-            redirect('pakar/masalah');
+            redirect('asisten_unit/masalah');
         }
 
         $this->data['masalah'] = Masalah_m::get();
@@ -178,7 +132,7 @@ class Pakar extends MY_Controller
         if ($this->POST('submit'))
         {
             $masalah = new Masalah_m();
-            $masalah->id_unit = $this->POST('id_unit');
+            $masalah->id_asisten_unit = $this->POST('id_asisten_unit');
             $masalah->judul = $this->POST('judul');
             $masalah->save();
 
@@ -205,14 +159,14 @@ class Pakar extends MY_Controller
             Solusi_m::insert($solusi);
 
             $this->flashmsg('Data successfully added');
-            redirect('pakar/add_masalah');
+            redirect('asisten_unit/add_masalah');
         }
 
         $this->load->model('Gejala_m');
         $this->data['gejala'] = Gejala_m::get();
 
-        $this->load->model('Unit_m');
-        $this->data['unit'] = Unit_m::get();
+        $this->load->model('asisten_unit_m');
+        $this->data['asisten_unit'] = asisten_unit_m::get();
 
         $this->data['title'] = 'Add Masalah';
         $this->data['content'] = 'add_masalah';
@@ -230,7 +184,7 @@ class Pakar extends MY_Controller
 
         if ($this->POST('submit'))
         {
-            $this->data['masalah']->id_unit = $this->POST('id_unit');
+            $this->data['masalah']->id_asisten_unit = $this->POST('id_asisten_unit');
             $this->data['masalah']->judul = $this->POST('judul');
             $this->data['masalah']->save();
 
@@ -261,14 +215,14 @@ class Pakar extends MY_Controller
             Solusi_m::insert($solusi);
 
             $this->flashmsg('Data successfully edited');
-            redirect('pakar/edit_masalah/' . $this->data['id_masalah']);
+            redirect('asisten_unit/edit_masalah/' . $this->data['id_masalah']);
         }
 
         $this->load->model('Gejala_m');
         $this->data['gejala'] = Gejala_m::get();
 
-        $this->load->model('Unit_m');
-        $this->data['unit'] = Unit_m::get();
+        $this->load->model('asisten_unit_m');
+        $this->data['asisten_unit'] = asisten_unit_m::get();
 
         $this->data['title'] = 'Edit Masalah';
         $this->data['content'] = 'edit_masalah';
@@ -284,12 +238,10 @@ class Pakar extends MY_Controller
             $data = Pengetahuan_tacit_m::find($this->data['id_tacit']);
             $data->delete();
             $this->flashmsg('Data successfully deleted');
-            redirect('pakar/pengetahuan_tacit');
+            redirect('asisten_unit/pengetahuan_tacit');
         }
 
-        $this->data['pengetahuan_tacit'] = Pengetahuan_tacit_m::with('like', 'komentar')
-                                            ->where('id_pengguna', $this->data['id_pengguna'])
-                                            ->get();
+        $this->data['pengetahuan_tacit'] = Pengetahuan_tacit_m::where('id_pengguna', $this->data['id_pengguna'])->get();
         $this->data['title'] = 'Pengetahuan Tacit';
         $this->data['content'] = 'pengetahuan_tacit';
         $this->template($this->data, $this->module);
@@ -301,26 +253,58 @@ class Pakar extends MY_Controller
         $this->check_allowance(!isset($this->data['id_tacit']));
 
         $this->load->model('Pengetahuan_tacit_m');
-        $this->data['pengetahuan_tacit'] = Pengetahuan_tacit_m::with('komentar', 'pengguna')
+        $this->data['pengetahuan_tacit'] = Pengetahuan_tacit_m::with('komentar', 'pengguna', 'tag', 'tag.pengguna')
         									->find($this->data['id_tacit']);
         $this->check_allowance(!isset($this->data['pengetahuan_tacit']), ['Data not found', 'danger']);
 
         if ($this->POST('submit'))
         {
         	$komentar = new Komentar_tacit_m();
-        	$komentar->id_tacit = $this->data['id_tacit'];
+        	$komentar->id_tacit    = $this->data['id_tacit'];
         	$komentar->id_pengguna = $this->data['id_pengguna'];
-        	$komentar->komentar = $this->POST('komentar');
+        	$komentar->komentar    = $this->POST('komentar');
         	$komentar->save();
 
         	$this->flashmsg('Comment successfully added');
-            redirect('pakar/detail_pengetahuan_tacit/' . $this->data['id_tacit']);
+            redirect('asisten_unit/detail_pengetahuan_tacit/' . $this->data['id_tacit']);
 
         }
 
+        if ($this->POST('submit_tag'))
+        {
+            $this->load->model('Notifikasi_m');
+            Tag_tacit_m::where('id_tacit', $this->data['id_tacit'])->delete();
+            $tags = explode(',', $this->POST('tags'));
+            $tagData = [];
+            $notifikasi = [];
+            foreach ($tags as $tag)
+            {
+                $pengguna = Pengguna_m::where('nama', $tag)->first();
+                if (isset($pengguna))
+                {
+                    $tagData []= [
+                        'id_tacit'      => $this->data['id_tacit'],
+                        'id_pengguna'   => $pengguna->id_pengguna
+                    ];
+
+                    $notifikasi []= [
+                        'id_pengguna'       => $pengguna->id_pengguna,
+                        'id_pengetahuan'    => $this->data['id_tacit'],
+                        'jenis'             => 'Tag Tacit',
+                        'deskripsi'         => ''
+                    ];
+                }
+            }
+            Tag_tacit_m::insert($tagData);
+            Notifikasi_m::insert($notifikasi);
+            $this->flashmsg('Data tag berhasil ditambah');
+            redirect('asisten_unit/detail_pengetahuan_tacit/' . $this->data['id_tacit']);
+        }
+
         $this->load->helper('timeago');
-        $this->data['title'] = 'Detail Pengetahuan Tacit';
-        $this->data['content'] = 'detail_pengetahuan_tacit';
+        $this->data['pengguna'] = Pengguna_m::get();
+        $this->data['title']    = 'Detail Pengetahuan Tacit';
+        $this->data['content']  = 'detail_pengetahuan_tacit';
         $this->template($this->data, $this->module);
     }
 
@@ -336,7 +320,7 @@ class Pakar extends MY_Controller
             $pengetahuan_tacit->isi = $this->POST('isi');
             $pengetahuan_tacit->save();
             $this->flashmsg('Data successfully added');
-            redirect('pakar/add_pengetahuan_tacit');
+            redirect('asisten_unit/add_pengetahuan_tacit');
         }
 
         $this->load->model('Kategori_m');
@@ -362,7 +346,7 @@ class Pakar extends MY_Controller
             $this->data['pengetahuan_tacit']->isi = $this->POST('isi');
             $this->data['pengetahuan_tacit']->save();
             $this->flashmsg('Data successfully edited');
-            redirect('pakar/edit_pengetahuan_tacit/' . $this->data['id_tacit']);
+            redirect('asisten_unit/edit_pengetahuan_tacit/' . $this->data['id_tacit']);
         }
 
         $this->load->model('Kategori_m');
@@ -382,7 +366,7 @@ class Pakar extends MY_Controller
             @unlink(FCPATH . 'assets/lampiran/' . $data->lampiran);
             $data->delete();
             $this->flashmsg('Data successfully deleted');
-            redirect('pakar/pengetahuan_eksplisit');
+            redirect('asisten_unit/pengetahuan_eksplisit');
         }
 
         $this->data['pengetahuan_eksplisit'] = Pengetahuan_eksplisit_m::where('id_pengguna', $this->data['id_pengguna'])->get();
@@ -397,7 +381,7 @@ class Pakar extends MY_Controller
         $this->check_allowance(!isset($this->data['id_eksplisit']));
 
         $this->load->model('Pengetahuan_eksplisit_m');
-        $this->data['pengetahuan_eksplisit'] = Pengetahuan_eksplisit_m::with('komentar', 'pengguna')
+        $this->data['pengetahuan_eksplisit'] = Pengetahuan_eksplisit_m::with('komentar', 'pengguna', 'tag', 'tag.pengguna')
         										->find($this->data['id_eksplisit']);
         $this->check_allowance(!isset($this->data['pengetahuan_eksplisit']), ['Data not found', 'danger']);
 
@@ -410,11 +394,42 @@ class Pakar extends MY_Controller
         	$komentar->save();
 
         	$this->flashmsg('Comment successfully added');
-            redirect('pakar/detail_pengetahuan_eksplisit/' . $this->data['id_eksplisit']);
+            redirect('asisten_unit/detail-pengetahuan-eksplisit/' . $this->data['id_eksplisit']);
+        }
 
+        if ($this->POST('submit_tag'))
+        {
+            $this->load->model('Notifikasi_m');
+            Tag_eksplisit_m::where('id_eksplisit', $this->data['id_eksplisit'])->delete();
+            $tags = explode(',', $this->POST('tags'));
+            $tagData = [];
+            $notifikasi = [];
+            foreach ($tags as $tag)
+            {
+                $pengguna = Pengguna_m::where('nama', $tag)->first();
+                if (isset($pengguna))
+                {
+                    $tagData []= [
+                        'id_eksplisit'      => $this->data['id_eksplisit'],
+                        'id_pengguna'   => $pengguna->id_pengguna
+                    ];
+
+                    $notifikasi []= [
+                        'id_pengguna'       => $pengguna->id_pengguna,
+                        'id_pengetahuan'    => $this->data['id_eksplisit'],
+                        'jenis'             => 'Tag Eksplisit',
+                        'deskripsi'         => ''
+                    ];
+                }
+            }
+            Tag_eksplisit_m::insert($tagData);
+            Notifikasi_m::insert($notifikasi);
+            $this->flashmsg('Data tag berhasil ditambah');
+            redirect('asisten_unit/detail-pengetahuan-eksplisit/' . $this->data['id_eksplisit']);
         }
 
         $this->load->helper('timeago');
+        $this->data['pengguna'] = Pengguna_m::get();
         $this->data['title'] = 'Detail Pengetahuan Eksplisit';
         $this->data['content'] = 'detail_pengetahuan_eksplisit';
         $this->template($this->data, $this->module);
@@ -437,7 +452,7 @@ class Pakar extends MY_Controller
             $this->upload($_FILES['lampiran']['name'], 'assets/lampiran', 'lampiran');
 
             $this->flashmsg('Data successfully added');
-            redirect('pakar/add_pengetahuan_eksplisit');
+            redirect('asisten_unit/add_pengetahuan_eksplisit');
         }
 
         $this->load->model('Kategori_m');
@@ -472,89 +487,13 @@ class Pakar extends MY_Controller
             $this->data['pengetahuan_eksplisit']->save();
 
             $this->flashmsg('Data successfully edited');
-            redirect('pakar/edit_pengetahuan_eksplisit/' . $this->data['id_eksplisit']);
+            redirect('asisten_unit/edit_pengetahuan_eksplisit/' . $this->data['id_eksplisit']);
         }
 
         $this->load->model('Kategori_m');
         $this->data['kategori'] = Kategori_m::get();
         $this->data['title'] = 'Edit Pengetahuan Eksplisit';
         $this->data['content'] = 'edit_pengetahuan_eksplisit';
-        $this->template($this->data, $this->module);
-    }
-
-    public function validasi_tacit()
-    {
-        $this->load->model('Pengetahuan_tacit_m');
-        if ($this->POST('validate'))
-        {
-            $data = Pengetahuan_tacit_m::find($this->POST('id'));
-            $data->status = $data->status == 'Pending' ? 'Valid' : 'Pending';
-            $data->save();
-
-            $pengguna = Pengguna_m::find($data->id_pengguna);
-            switch ($data->status)
-            {
-                case 'Valid':
-                    $pengguna->poin += 25;
-                    $this->load->model('Notifikasi_m');
-                    $notifikasi = new Notifikasi_m();
-                    $notifikasi->id_pengguna    = $data->id_pengguna;
-                    $notifikasi->id_pengetahuan = $this->POST('id');
-                    $notifikasi->jenis          = 'Tacit';
-                    $notifikasi->deskripsi      = '';
-                    $notifikasi->save();
-                    break;
-
-                case 'Pending':
-                    $pengguna->poin -= 25;
-                    break;
-            }
-            $pengguna->save();
-
-            echo json_encode(['status' => $data->status]);
-            exit;
-        }
-        $this->data['pengetahuan_tacit'] = Pengetahuan_tacit_m::get();
-        $this->data['title'] = 'Validasi Tacit';
-        $this->data['content'] = 'validasi_tacit';
-        $this->template($this->data, $this->module);
-    }
-
-    public function validasi_eksplisit()
-    {
-        $this->load->model('Pengetahuan_eksplisit_m');
-        if ($this->POST('validate'))
-        {
-            $data = Pengetahuan_eksplisit_m::find($this->POST('id'));
-            $data->status = $data->status == 'Pending' ? 'Valid' : 'Pending';
-            $data->save();
-
-            $pengguna = Pengguna_m::find($data->id_pengguna);
-            switch ($data->status)
-            {
-                case 'Valid':
-                    $pengguna->poin += 25;
-                    $this->load->model('Notifikasi_m');
-                    $notifikasi = new Notifikasi_m();
-                    $notifikasi->id_pengguna    = $data->id_pengguna;
-                    $notifikasi->id_pengetahuan = $this->POST('id');
-                    $notifikasi->jenis          = 'Eksplisit';
-                    $notifikasi->deskripsi      = '';
-                    $notifikasi->save();
-                    break;
-
-                case 'Pending':
-                    $pengguna->poin -= 25;
-                    break;
-            }
-            $pengguna->save();
-
-            echo json_encode(['status' => $data->status]);
-            exit;
-        }
-        $this->data['pengetahuan_eksplisit'] = Pengetahuan_eksplisit_m::get();
-        $this->data['title'] = 'Pengetahuan Eksplisit';
-        $this->data['content'] = 'validasi_eksplisit';
         $this->template($this->data, $this->module);
     }
 
@@ -654,7 +593,7 @@ class Pakar extends MY_Controller
             {
             	$this->flashmsg('Reward gagal diambil. Poin anda kurang.', 'danger');
             }
-            redirect('pakar/reward');
+            redirect('asisten_unit/reward');
         }
 
         $this->data['reward'] = Reward_m::get();
@@ -671,60 +610,6 @@ class Pakar extends MY_Controller
                                 ->get();
         $this->data['title'] = 'My Reward';
         $this->data['content'] = 'my_reward';
-        $this->template($this->data, $this->module);
-    }
-
-    public function data_revise()
-    {
-        $this->load->model('Masalah_m');
-
-        $this->data['masalah'] = Masalah_m::get();
-        $this->data['title'] = 'Data Revise';
-        $this->data['content'] = 'data_revise';
-        $this->template($this->data, $this->module);
-    }
-
-    public function ubah_solusi()
-    {
-        $this->data['id_masalah'] = $this->uri->segment(3);
-        $this->check_allowance(!isset($this->data['id_masalah']));
-
-        $this->load->model('Masalah_m');
-        $this->data['masalah'] = Masalah_m::find($this->data['id_masalah']);
-        $this->check_allowance(!isset($this->data['masalah']), ['Data not found', 'danger']);
-
-        if ($this->POST('validasi_solusi'))
-        {
-            $this->load->model('Solusi_m');
-            $data = Solusi_m::find($this->POST('id_solusi'));
-            $data->status = $data->status == 'Pending' ? 'Valid' : 'Pending';
-            $data->save();
-            echo json_encode(['status' => $data->status]);
-            exit;
-        }
-
-        if ($this->POST('submit'))
-        {
-
-            $this->load->model('Solusi_m');
-            $solusi = [];
-            foreach ($this->POST('solusi') as $s)
-            {
-                $solusi []= [
-                    'id_masalah'    => $this->data['masalah']->id_masalah,
-                    'solusi'        => $s
-                ];
-            }
-            Solusi_m::where('id_masalah', $this->data['masalah']->id_masalah)
-                                ->delete();
-            Solusi_m::insert($solusi);
-
-            $this->flashmsg('Data successfully edited');
-            redirect('pakar/ubah-solusi/' . $this->data['id_masalah']);
-        }
-
-        $this->data['title']    = 'Ubah Solusi';
-        $this->data['content']  = 'ubah_solusi';
         $this->template($this->data, $this->module);
     }
 
@@ -755,158 +640,75 @@ class Pakar extends MY_Controller
         $this->template($this->data, $this->module);
     }
 
-    public function pengguna()
+    public function data_revise()
     {
-        $this->data['id_pengguna'] = $this->uri->segment(3);
-        $this->load->model('Pengguna_m');
-        if (isset($this->data['id_pengguna']))
-        {
-            $data = Pengguna_m::find($this->data['id_pengguna']);
-            $data->delete();
-            $this->flashmsg('Data successfully deleted');
-            redirect('pakar/pengguna');
-        }
+        $this->load->model('Masalah_m');
 
-        $this->data['pengguna'] = Pengguna_m::get();
-        $this->data['title'] = 'Pengguna';
-        $this->data['content'] = 'pengguna';
+        $this->data['masalah'] = Masalah_m::get();
+        $this->data['title'] = 'Data Revise';
+        $this->data['content'] = 'data_revise';
         $this->template($this->data, $this->module);
     }
 
-    public function detail_pengguna()
+    public function ubah_solusi()
     {
-        $this->data['id_pengguna'] = $this->uri->segment(3);
-        $this->check_allowance(!isset($this->data['id_pengguna']));
+        $this->data['id_masalah'] = $this->uri->segment(3);
+        $this->check_allowance(!isset($this->data['id_masalah']));
 
-        $this->load->model('Pengguna_m');
-        $this->data['pengguna'] = Pengguna_m::with(['tacit', 'eksplisit', 'tacit_tervalidasi', 'eksplisit_tervalidasi'])
-                                    ->find($this->data['id_pengguna']);
-        $this->check_allowance(!isset($this->data['pengguna']), ['Data not found', 'danger']);
-        $this->data['title'] = 'Detail Pengguna';
-        $this->data['content'] = 'detail_pengguna';
-        $this->template($this->data, $this->module);
-    }
+        $this->load->model('Masalah_m');
+        $this->data['masalah'] = Masalah_m::find($this->data['id_masalah']);
+        $this->check_allowance(!isset($this->data['masalah']), ['Data not found', 'danger']);
 
-    public function add_pengguna()
-    {
-        $this->load->model('Pengguna_m');
+
         if ($this->POST('submit'))
         {
-            $password = $this->POST('password');
-            $rpassword = $this->POST('rpassword');
-            if ($password != $rpassword)
+
+            $this->load->model('Solusi_m');
+            $solusi = [];
+            foreach ($this->POST('solusi') as $s)
             {
-                $this->flashmsg('Password harus sama dengan konfirmasi password', 'warning');
-                redirect('pakar/add-pengguna');
+                $solusi []= [
+                    'id_masalah'    => $this->data['masalah']->id_masalah,
+                    'solusi'        => $s,
+                    'status'        => 'Pending'
+                ];
             }
+            Solusi_m::where('id_masalah', $this->data['masalah']->id_masalah)
+                                ->delete();
+            Solusi_m::insert($solusi);
 
-            $pengguna = new Pengguna_m();
-            $pengguna->nip = $this->POST('nip');
-            $pengguna->id_role = $this->POST('id_role');
-            $pengguna->nama = $this->POST('nama');
-            $pengguna->jenis_kelamin = $this->POST('jenis_kelamin');
-            $pengguna->tempat_lahir = $this->POST('tempat_lahir');
-            $pengguna->tanggal_lahir = $this->POST('tanggal_lahir');
-            $pengguna->password = md5($password);
-            $pengguna->save();
-            $this->flashmsg('Data successfully added');
-            redirect('pakar/add_pengguna');
-        }
-
-        $this->load->model('Role_m');
-        $this->data['role'] = Role_m::get();
-        $this->data['title'] = 'Add Pengguna';
-        $this->data['content'] = 'add_pengguna';
-        $this->template($this->data, $this->module);
-    }
-
-    public function edit_pengguna()
-    {
-        $this->data['id_pengguna'] = $this->uri->segment(3);
-        $this->check_allowance(!isset($this->data['id_pengguna']));
-
-        $this->load->model('Pengguna_m');
-        $this->data['pengguna'] = Pengguna_m::find($this->data['id_pengguna']);
-        $this->check_allowance(!isset($this->data['pengguna']), ['Data not found', 'danger']);
-
-        if ($this->POST('submit'))
-        {
-            $this->data['pengguna']->nip = $this->POST('nip');
-            $this->data['pengguna']->id_role = $this->POST('id_role');
-            $this->data['pengguna']->nama = $this->POST('nama');
-            $this->data['pengguna']->jenis_kelamin = $this->POST('jenis_kelamin');
-            $this->data['pengguna']->tempat_lahir = $this->POST('tempat_lahir');
-            $this->data['pengguna']->tanggal_lahir = $this->POST('tanggal_lahir');
-            $this->data['pengguna']->save();
             $this->flashmsg('Data successfully edited');
-            redirect('pakar/edit_pengguna/' . $this->data['id_pengguna']);
+            redirect('asisten_unit/ubah-solusi/' . $this->data['id_masalah']);
         }
 
-        $this->load->model('Role_m');
-        $this->data['role'] = Role_m::get();
-        $this->data['title'] = 'Edit Pengguna';
-        $this->data['content'] = 'edit_pengguna';
+        $this->data['title']    = 'Ubah Solusi';
+        $this->data['content']  = 'ubah_solusi';
         $this->template($this->data, $this->module);
     }
 
-    public function unit()
+    public function like_tacit()
     {
-        $this->data['id_unit'] = $this->uri->segment(3);
-        $this->load->model('Unit_m');
-        if (isset($this->data['id_unit']))
-        {
-            $data = Unit_m::find($this->data['id_unit']);
-            $data->delete();
-            $this->flashmsg('Data successfully deleted');
-            redirect('pakar/unit');
-        }
-
-        $this->data['unit'] = Unit_m::get();
-        $this->data['title'] = 'Unit';
-        $this->data['content'] = 'unit';
+        $this->load->model('Pengetahuan_tacit_m');
+        $this->data['pengetahuan_tacit'] = Pengetahuan_tacit_m::with(['like' => function($query) {
+                                                $query->where('id_pengguna', $this->data['id_pengguna']);
+                                            }])
+                                            ->where('status', 'Valid')
+                                            ->get();
+        $this->data['title'] = 'Pengetahuan Tacit Yg Disukai';
+        $this->data['content'] = 'like_tacit';
         $this->template($this->data, $this->module);
     }
 
-    public function add_unit()
+    public function like_eksplisit()
     {
-        $this->load->model('Unit_m');
-        if ($this->POST('submit'))
-        {
-            $unit = new Unit_m();
-            $unit->unit = $this->POST('unit');
-            $unit->kode_bagian = $this->POST('kode_bagian');
-            $unit->desa = $this->POST('desa');
-            $unit->save();
-            $this->flashmsg('Data successfully added');
-            redirect('pakar/add-unit');
-        }
-
-        $this->data['title'] = 'Add Unit';
-        $this->data['content'] = 'add_unit';
-        $this->template($this->data, $this->module);
-    }
-
-    public function edit_unit()
-    {
-        $this->data['id_unit'] = $this->uri->segment(3);
-        $this->check_allowance(!isset($this->data['id_unit']));
-
-        $this->load->model('Unit_m');
-        $this->data['unit'] = Unit_m::find($this->data['id_unit']);
-        $this->check_allowance(!isset($this->data['unit']), ['Data not found', 'danger']);
-
-        if ($this->POST('submit'))
-        {
-            $this->data['unit']->unit = $this->POST('unit');
-            $this->data['unit']->kode_bagian = $this->POST('kode_bagian');
-            $this->data['unit']->desa = $this->POST('desa');
-            $this->data['unit']->save();
-            $this->flashmsg('Data successfully edited');
-            redirect('pakar/edit-unit/' . $this->data['id_unit']);
-        }
-
-        $this->data['title'] = 'Edit Unit';
-        $this->data['content'] = 'edit_unit';
+        $this->load->model('Pengetahuan_eksplisit_m');
+        $this->data['pengetahuan_eksplisit'] = Pengetahuan_eksplisit_m::with(['like' => function($query) {
+                                                $query->where('id_pengguna', $this->data['id_pengguna']);
+                                            }])
+                                            ->where('status', 'Valid')
+                                            ->get();
+        $this->data['title'] = 'Pengetahuan Eksplisit Yg Disukai';
+        $this->data['content'] = 'like_eksplisit';
         $this->template($this->data, $this->module);
     }
 }

@@ -799,7 +799,7 @@ class Admin extends MY_Controller
         if (!isset($this->data['search']) or empty($this->data['search']))
         {
             $this->flashmsg('Anda harus memasukkan kata kunci pencarian', 'warning');
-            redirect('pakar');
+            redirect('admin');
         }
 
         $this->data['query']    = $this->POST('query');

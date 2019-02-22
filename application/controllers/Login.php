@@ -28,6 +28,10 @@ class Login extends MY_Controller
 					redirect('admin');
 					break;
 
+				case 5:
+					redirect('asisten-unit');
+					break;
+
 			}
 
 		}
@@ -43,7 +47,7 @@ class Login extends MY_Controller
 							->first();
 			if (!isset($pengguna)) 
 			{
-				$this->flashmsg('Email atau password salah','danger');
+				$this->flashmsg('NIP atau password salah','danger');
 			}
 			else
 			{

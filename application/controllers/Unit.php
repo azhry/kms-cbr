@@ -685,4 +685,30 @@ class Unit extends MY_Controller
         $this->data['content']  = 'ubah_solusi';
         $this->template($this->data, $this->module);
     }
+
+    public function like_tacit()
+    {
+        $this->load->model('Pengetahuan_tacit_m');
+        $this->data['pengetahuan_tacit'] = Pengetahuan_tacit_m::with(['like' => function($query) {
+                                                $query->where('id_pengguna', $this->data['id_pengguna']);
+                                            }])
+                                            ->where('status', 'Valid')
+                                            ->get();
+        $this->data['title'] = 'Pengetahuan Tacit Yg Disukai';
+        $this->data['content'] = 'like_tacit';
+        $this->template($this->data, $this->module);
+    }
+
+    public function like_eksplisit()
+    {
+        $this->load->model('Pengetahuan_eksplisit_m');
+        $this->data['pengetahuan_eksplisit'] = Pengetahuan_eksplisit_m::with(['like' => function($query) {
+                                                $query->where('id_pengguna', $this->data['id_pengguna']);
+                                            }])
+                                            ->where('status', 'Valid')
+                                            ->get();
+        $this->data['title'] = 'Pengetahuan Eksplisit Yg Disukai';
+        $this->data['content'] = 'like_eksplisit';
+        $this->template($this->data, $this->module);
+    }
 }
