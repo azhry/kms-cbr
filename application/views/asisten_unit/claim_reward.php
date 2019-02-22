@@ -6,14 +6,10 @@
 			<div class="portlet box green">
 				<div class="portlet-title">
 					<div class="caption">
-						Reward
+						Reward | Poin anda: <?= $data_pengguna->poin ?>
 					</div>
 				</div>
 				<div class="portlet-body">
-					<a class="btn green" href="<?= base_url('asisten-unit/add-reward') ?>">
-						<i class="fa fa-plus"></i> Tambah Data
-					</a>
-					<br><br>
 					<table class="table table-hover table-striped table-bordered">
 						<thead>
 							<tr>
@@ -30,17 +26,9 @@
 									<td><?= $row->reward ?></td>
 									<td><?= $row->poin ?></td>
 									<td>
-										<div class="btn-group">
-											<a href="<?= base_url('asisten-unit/detail-reward/' . $row->id_reward) ?>" class="btn blue">
-												<i class="fa fa-eye"></i>
-											</a>
-											<a href="<?= base_url('asisten-unit/edit-reward/' . $row->id_reward) ?>" class="btn green">
-												<i class="fa fa-edit"></i>
-											</a>
-											<a href="<?= base_url('asisten-unit/reward/' . $row->id_reward) ?>" class="btn red">
-												<i class="fa fa-trash"></i>
-											</a>
-										</div>
+										<a href="<?= base_url('asisten-unit/claim-reward/' . $row->id_reward) ?>" class="btn red">
+											Ambil Reward
+										</a>
 									</td>
 								</tr>
 							<?php endforeach; ?>

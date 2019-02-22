@@ -95,7 +95,12 @@
                 </li>
                 <li>
                     <a href="<?= base_url('asisten-unit/reward') ?>">
-                        <span class="title">Reward</span>
+                        <span class="title">Data Reward</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="<?= base_url('asisten-unit/claim-reward') ?>">
+                        <span class="title">Claim Reward</span>
                     </a>
                 </li>
             </ul>
