@@ -38,6 +38,16 @@
 					</table>
 					<input type="submit" name="submit" value="Cari Solusi" class="btn blue">					
 					<?= form_close() ?>
+					<hr>
+					<h4>Atau cari dengan memasukkan kata kunci</h4>
+					<?= form_open('pakar/problem-solving') ?>
+					<div class="input-group" style="width: 50% !important;">
+                        <input type="text" name="query" class="form-control" placeholder="Masukkan kata kunci">
+                        <span class="input-group-btn">
+                            <input type="submit" name="search" value="Cari" class="btn blue">
+                        </span>
+                    </div>   
+					<?= form_close() ?>
 				</div>
 			</div>
 			<?php if (isset($solusi)): ?>

@@ -1,4 +1,5 @@
 <?php 
+use Illuminate\Support\Facades\DB;
 
 class Pakar extends MY_Controller
 {
@@ -83,10 +84,27 @@ class Pakar extends MY_Controller
 			require_once APPPATH . 'libraries/cbr/CaseBasedReasoning.php';
 			$cbr = new CaseBasedReasoning($this->data['gejala']);
 			$this->load->model('Masalah_m');
-			$this->data['masalah'] = Masalah_m::with('solusi')->get();
+			$this->data['masalah'] = Masalah_m::with('gejala', 'gejala.gejala', 'solusi')->get();
 			$cbr->fit2($this->data['masalah']);
 			$this->data['solusi'] = $cbr->rank($this->POST('gejala'));
-		}
+        }
+
+        if ($this->POST('search'))
+        {
+            $query = $this->POST('query');
+            require_once APPPATH . 'libraries/cbr/CaseBasedReasoning.php';
+            $cbr = new CaseBasedReasoning($this->data['gejala']);
+            $this->load->model('Masalah_m');
+            $this->data['masalah'] = Masalah_m::with('gejala', 'gejala.gejala', 'solusi')->get();
+            $gejala = Gejala_m::where('gejala', 'like', '%' . strtolower($query) . '%')->get();
+            $selected = [];
+            foreach ($gejala as $row)
+            {
+                $selected []= $row->representasi;
+            }
+            $cbr->fit2($this->data['masalah']);
+            $this->data['solusi'] = $cbr->rank($selected);
+        }
 
 		$this->data['title']	= 'Problem Solving';
 		$this->data['content']	= 'problem_solving';
