@@ -92,18 +92,34 @@ class Pakar extends MY_Controller
         if ($this->POST('search'))
         {
             $query = $this->POST('query');
-            require_once APPPATH . 'libraries/cbr/CaseBasedReasoning.php';
-            $cbr = new CaseBasedReasoning($this->data['gejala']);
+            // require_once APPPATH . 'libraries/cbr/CaseBasedReasoning.php';
+            // $cbr = new CaseBasedReasoning($this->data['gejala']);
             $this->load->model('Masalah_m');
-            $this->data['masalah'] = Masalah_m::with('gejala', 'gejala.gejala', 'solusi')->get();
-            $gejala = Gejala_m::where('gejala', 'like', '%' . strtolower($query) . '%')->get();
-            $selected = [];
-            foreach ($gejala as $row)
+            // $this->data['masalah'] = Masalah_m::with('gejala', 'gejala.gejala', 'solusi')->get();
+            // $gejala = Gejala_m::where('gejala', 'like', '%' . strtolower($query) . '%')->get();
+            // $selected = [];
+            // foreach ($gejala as $row)
+            // {
+            //     $selected []= $row->representasi;
+            // }
+            // $cbr->fit2($this->data['masalah']);
+            // $this->data['solusi'] = $cbr->rank($selected);
+            
+            $this->data['masalah'] = Masalah_m::with('gejala', 'gejala.gejala', 'solusi')
+                                    ->get();
+            $masalah = [];
+            foreach ($this->data['masalah'] as $row)
             {
-                $selected []= $row->representasi;
+                foreach ($row['gejala'] as $g)
+                {
+                    if (strpos(strtolower($g['gejala']['gejala']), strtolower($query)) !== false) 
+                    {
+                        $masalah []= $row;
+                        break;
+                    }
+                }
             }
-            $cbr->fit2($this->data['masalah']);
-            $this->data['solusi'] = $cbr->rank($selected);
+            $this->data['masalah'] = $masalah;
         }
 
 		$this->data['title']	= 'Problem Solving';

@@ -85,6 +85,49 @@
 				</div>
 			</div>
 			<?php endif; ?>
+			<?php if (isset($masalah)): ?>
+			<div class="portlet box green">
+				<div class="portlet-title">
+					<div class="caption">
+						Masalah
+					</div>
+				</div>
+				<div class="portlet-body">
+					<table class="table">
+						<thead>
+							<tr>
+								<th>No.</th>
+								<th>Masalah</th>
+								<th>Gejala</th>
+								<th>Solusi</th>
+							</tr>
+						</thead>
+						<tbody>
+							<?php foreach ($masalah as $i => $row): ?>
+								<tr>
+									<td><?= $i + 1 ?></td>
+									<td><?= $row['judul'] ?></td>
+									<td>
+										<ul>
+											<?php foreach ($row['gejala'] as $g): ?>
+												<li><?= $g['gejala']['gejala'] ?></li>
+											<?php endforeach; ?>
+										</ul>
+									</td>
+									<td>
+										<ul>
+											<?php foreach ($row['solusi'] as $s): ?>
+												<li><?= $s['solusi'] ?></li>
+											<?php endforeach; ?>
+										</ul>
+									</td>
+								</tr>
+							<?php endforeach; ?>
+						</tbody>
+					</table>		
+				</div>
+			</div>
+			<?php endif; ?>
 		</div>
 	</div>
 	<!-- END PAGE CONTENT INNER -->
