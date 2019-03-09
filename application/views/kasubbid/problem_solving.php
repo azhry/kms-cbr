@@ -38,6 +38,16 @@
 					</table>
 					<input type="submit" name="submit" value="Cari Solusi" class="btn blue">					
 					<?= form_close() ?>
+					<hr>
+					<h4>Atau cari dengan memasukkan kata kunci</h4>
+					<?= form_open('kasubbid/problem-solving') ?>
+					<div class="input-group" style="width: 50% !important;">
+                        <input type="text" name="query" class="form-control" placeholder="Masukkan kata kunci">
+                        <span class="input-group-btn">
+                            <input type="submit" name="search" value="Cari" class="btn blue">
+                        </span>
+                    </div>   
+					<?= form_close() ?>
 				</div>
 			</div>
 			<div class="portlet box green">
@@ -84,6 +94,49 @@
 										</ul>
 									</td>
 									<td><?= $row['distance'] ?></td>
+								</tr>
+							<?php endforeach; ?>
+						</tbody>
+					</table>		
+				</div>
+			</div>
+			<?php endif; ?>
+			<?php if (isset($masalah)): ?>
+			<div class="portlet box green">
+				<div class="portlet-title">
+					<div class="caption">
+						Masalah
+					</div>
+				</div>
+				<div class="portlet-body">
+					<table class="table">
+						<thead>
+							<tr>
+								<th>No.</th>
+								<th>Masalah</th>
+								<th>Gejala</th>
+								<th>Solusi</th>
+							</tr>
+						</thead>
+						<tbody>
+							<?php foreach ($masalah as $i => $row): ?>
+								<tr>
+									<td><?= $i + 1 ?></td>
+									<td><?= $row['judul'] ?></td>
+									<td>
+										<ul>
+											<?php foreach ($row['gejala'] as $g): ?>
+												<li><?= $g['gejala']['gejala'] ?></li>
+											<?php endforeach; ?>
+										</ul>
+									</td>
+									<td>
+										<ul>
+											<?php foreach ($row['solusi'] as $s): ?>
+												<li><?= $s['solusi'] ?></li>
+											<?php endforeach; ?>
+										</ul>
+									</td>
 								</tr>
 							<?php endforeach; ?>
 						</tbody>

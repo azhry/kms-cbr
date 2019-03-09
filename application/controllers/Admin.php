@@ -92,6 +92,27 @@ class Admin extends MY_Controller
 			$this->data['solusi'] = $cbr->rank($this->POST('gejala'));
 		}
 
+        if ($this->POST('search'))
+        {
+            $query = $this->POST('query');
+            $this->load->model('Masalah_m');
+            $this->data['masalah'] = Masalah_m::with('gejala', 'gejala.gejala', 'solusi')
+                                    ->get();
+            $masalah = [];
+            foreach ($this->data['masalah'] as $row)
+            {
+                foreach ($row['gejala'] as $g)
+                {
+                    if (strpos(strtolower($g['gejala']['gejala']), strtolower($query)) !== false) 
+                    {
+                        $masalah []= $row;
+                        break;
+                    }
+                }
+            }
+            $this->data['masalah'] = $masalah;
+        }
+
 		$this->data['title']	= 'Problem Solving';
 		$this->data['content']	= 'problem_solving';
 		$this->template($this->data, $this->module);
