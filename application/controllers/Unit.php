@@ -89,7 +89,7 @@ class Unit extends MY_Controller
 			$cbr = new CaseBasedReasoning($this->data['gejala']);
 			$this->load->model('Masalah_m');
 			$this->data['masalah'] = Masalah_m::with('solusi')->get();
-			$cbr->fit2($this->data['masalah']);
+			$cbr->fit($this->data['masalah']);
 			$this->data['solusi'] = $cbr->rank($this->POST('gejala'));
 		}
 
