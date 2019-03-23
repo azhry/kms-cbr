@@ -85,7 +85,7 @@ class Pakar extends MY_Controller
 			$cbr = new CaseBasedReasoning($this->data['gejala']);
 			$this->load->model('Masalah_m');
 			$this->data['masalah'] = Masalah_m::with('gejala', 'gejala.gejala', 'solusi')->get();
-			$cbr->fit($this->data['masalah']);
+			$cbr->fit2($this->data['masalah']);
 			$this->data['solusi'] = $cbr->rank($this->POST('gejala'));
         }
 
