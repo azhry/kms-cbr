@@ -18,6 +18,7 @@
 								<th>Judul</th>
 								<th>Pengguna</th>
 								<th>Status</th>
+								<th>Aksi</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -28,6 +29,19 @@
 									<td><?= $row->judul ?></td>
 									<td><?= $row->pengguna->nama ?></td>
 									<td><?= $row->status == 'Pending' ? '<button onclick="validasi(' . $row->id_tacit . ', this);" type="button" class="btn red"><i class="fa fa-close"></i> Pending</button>' : '<button onclick="validasi(' . $row->id_tacit . ', this);" type="button" class="btn green"><i class="fa fa-check"></i> Valid</button>' ?></td>
+									<td>
+										<div class="btn-group">
+											<a href="<?= base_url('pakar/detail-pengetahuan-tacit/' . $row->id_tacit) ?>" class="btn blue">
+												<i class="fa fa-eye"></i>
+											</a>
+											<a href="<?= base_url('pakar/edit-pengetahuan-tacit/' . $row->id_tacit) ?>" class="btn green">
+												<i class="fa fa-edit"></i>
+											</a>
+											<a href="<?= base_url('pakar/pengetahuan-tacit/' . $row->id_tacit) ?>" class="btn red">
+												<i class="fa fa-trash"></i>
+											</a>
+										</div>
+									</td>
 								</tr>
 							<?php endforeach; ?>
 						</tbody>
